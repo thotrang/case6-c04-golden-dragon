@@ -8,5 +8,7 @@ router.get('/:id',userController.getDetail)
 router.delete(`/:id`,userController.deleteUser)
 router.post('/',userController.addStaff)
 router.put('/updateRoleUser/:id',userController.updateRoleUser)
+router.get('/searchStaff/:q',userController.searchStaff)
+
 
 module.exports = router

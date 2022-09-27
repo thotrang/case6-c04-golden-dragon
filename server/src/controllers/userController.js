@@ -6,23 +6,23 @@ const { body, validationResult } = require('express-validator');
 const getStaff = async (req, res, next) => {
     try {
         let users = await User.find().populate('roleId', 'name');
-        let staffs = []
-        for (let user of users) {
-            if (user.roleId) {
-                if (user.roleId.name == "accountant" || user.roleId.name == "seller") {
-                    staffs.push(user)
-                }
-            }
-        }
-        let query = req.query.page;
-        let limit = 10;
-        let offset = 0;
-        if (query) {
-            let page = + query;
-            offset = (page - 1) * limit
-        }
-        accountants = accountants.limit(limit).skip(offset)
-        res.status(200).json(accountants)
+        // let staffs = []
+        // for (let user of users) {
+        //     if (user.roleId) {
+        //         if (user.roleId.name == "accountant" || user.roleId.name == "seller") {
+        //             staffs.push(user)
+        //         }
+        //     }
+        // }
+        // let query = req.query.page;
+        // let limit = 10;
+        // let offset = 0;
+        // if (query) {
+        //     let page = + query;
+        //     offset = (page - 1) * limit
+        // }
+        // staffs = staffs.limit(limit).skip(offset)
+        res.status(200).json(users)
 
     } catch (err) {
         console.log(err);
@@ -32,7 +32,7 @@ const getStaff = async (req, res, next) => {
 const getAll = async (req, res, next) => {
     try {
         let query = req.query.page;
-        let limit = 2;
+        let limit = 3;
         let offset = 0;
         if (query) {
             let page = + query;
@@ -153,6 +153,22 @@ const updateRoleUser = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
+const searchStaff =  async (req , res , next ) => {
+    let search = req.params.q;
+    
+    let cursor = await User.find({
+        '$or':[
+            {name:{$regex:search}}
+        ]
+    })
+    if(cursor){
+        res.json(cursor)
+    }else{
+        res.json({
+            message:'loi'
+        })
+    }
+}
 module.exports = {
     getStaff,
     getAll,
@@ -160,5 +176,6 @@ module.exports = {
     addStaff,
     editUser,
     getDetail,
-    updateRoleUser
+    updateRoleUser,
+    searchStaff
 };
