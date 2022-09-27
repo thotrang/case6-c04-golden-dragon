@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema(
         name: {
             type: String,
             require: true,
-            maxLenght: [10, 'please enter name description '],
+            maxLength: [10, 'please enter name description '],
         },
         role: {
             type: Schema.Types.ObjectId,
@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema(
         phone: {
             type: String,
             require: true,
-            maxLenght: [10, 'please enter phone description '],
+            maxLength: [10, 'please enter phone description '],
         },
         userName: {
             type: String,
