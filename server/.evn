@@ -1,2 +1,0 @@
-PORT = 3000
-MONGO0DB_URL = mongodb+srv://admin:admin123@cluster0.qkyelvk.mongodb.net/case6-ecommerce-demo
