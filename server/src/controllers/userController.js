@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const Role = require('../models/role');
 
-const getAccountant = async (req, res, next) => {
+const getStaff = async (req, res, next) => {
     try {
         let users = await User.find().populate('roleId', 'name');
         let accountants = []
@@ -12,6 +12,14 @@ const getAccountant = async (req, res, next) => {
                 }
             }
         }
+        let query = req.query.page;
+        let limit = 10;
+        let offset = 0;
+        if (query) {
+            let page = + query;
+            offset = (page - 1) * limit
+        }
+        accountants = accountants.limit(limit).skip(offset)
         res.status(200).json(accountants)
 
     } catch (err) {
@@ -22,15 +30,15 @@ const getAccountant = async (req, res, next) => {
 const getAll = async (req, res, next) => {
     try {
         let query = req.query.page;
-        let limit = 10;
+        let limit = 2;
         let offset = 0;
         if (query) {
             let page = + query;
             offset = (page - 1) * limit
         }
-            let users = await User.find().populate('roleId', 'name').limit(limit).skip(offset)
-            res.status(200).json(users)
-        
+        let users = await User.find().populate('roleId', 'name').limit(limit).skip(offset)
+        res.status(200).json(users)
+
     } catch (err) {
         console.log(err);
         res.status(400).json(err)
@@ -57,23 +65,20 @@ const deleteUser = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
-const addUser = (req, res, next) => {
+const addUser = async (req, res, next) => {
     try {
-        let user = req.body.user;
-        
+        let user = req.body;
+        let newUser = await User.create(user);
+        res.status(200).json(newUser)
     } catch (err) {
         res.status(400).json(err)
     }
 }
-// const addSeller = (req,res,next) => {
-//     try{
 
-//     }catch(err){
-//         res.status(400).json(err)
-//     }
-// }
+
 module.exports = {
-    getAccountant,
+    getStaff,
     getAll,
-    deleteUser
+    deleteUser,
+    addUser
 };
