@@ -4,59 +4,59 @@ const UserSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            require: [true,'please enter name description'],
+            required: [true,'please enter name description'],
             maxLength: [10, 'max length 10'],
         },
         roleId: {
             type: Schema.Types.ObjectId,
             ref: 'Role',
-            require: true,
+            required: true,
         },
         email: {
             type: String,
-            require: true,
+            required: true,
         },
         phone: {
             type: String,
-            require: true,
-            maxLength: [10, 'max lenght 10'],
+            required: true,
+            maxLength: [10, 'max length 10'],
         },
         userName: {
             type: String,
-            require: true,
-            maxLength: [10, 'max lenght 10'],
+            required: true,
+            maxLength: [10, 'max length 10'],
         },
         gender: {
             type: String,
-            require: true,
+            required: true,
         },
         dob: {
             type: String,
-            require: true,
+            required: true,
         },
         avatar: {
             public_id: {
                 type: String,
-                require: true,
+                required: true,
             },
             url: {
                 type: String,
-                require: true,
+                required: true,
             },
         },
         address: {
             type: String,
-            require: true,
+            required: true,
         },
         password: {
             type: String,
-            require: true,
-            maxLength: [10, 'max lenght 10'],
+            required: true,
+            maxLength: [10, 'max length 10'],
         },
         cardId: {
             type: Schema.Types.ObjectId,
             ref: 'Cart',
-            require: true,
+            required: true,
         },
     },
     {
