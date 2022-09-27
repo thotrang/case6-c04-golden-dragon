@@ -115,15 +115,39 @@ const editUser = async (req, res, next) => {
     }
 }
 
-const getDetail = async (req,res,next) => {
+const getDetail = async (req, res, next) => {
     try {
         let id = req.params.id;
-            let user = await User.findById(id).populate('roleId', 'name');
-            if (!user) {
-                res.status(404).json();
-            } else {
-                res.status(200).json(user);
-            }
+        let user = await User.findById(id).populate('roleId', 'name');
+        if (!user) {
+            res.status(404).json();
+        } else {
+            res.status(200).json(user);
+        }
+
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}
+const updateRoleUser = async (req, res, next) => {
+    try {
+        let id = req.params.id;
+        let newRole = req.body;
+        let user = await User.findById(id).populate('roleId', 'name');
+        if (!user) {
+            res.status(404).json();
+        } else {
+            // chú ý role chuyền vào
+            let role = await Role.findOne({
+                name: newRole.role
+            })
+            await User.findOneAndUpdate({
+                _id: id
+            }, { $set: { roleId: role._id } });
+
+            user = await User.findById(id).populate('roleId', 'name');
+            res.status(200).json(user);
+        }
 
     } catch (err) {
         res.status(400).json(err)
@@ -135,5 +159,6 @@ module.exports = {
     deleteUser,
     addStaff,
     editUser,
-    getDetail
+    getDetail,
+    updateRoleUser
 };
