@@ -42,14 +42,10 @@ const ProductSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Brand',
         },
-        createAt: {
-            type: Date,
-            default: Date.now,
-        },
     },
-    // {
-    //     timestamps: true,
-    // },
+    {
+        timestamps: true,
+    },
 );
 
 module.exports = mongoose.model('Product', ProductSchema);
