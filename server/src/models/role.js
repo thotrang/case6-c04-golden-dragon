@@ -1,3 +1,4 @@
+const { Schema } = require('mongoose');
 const mongoose = require("mongoose");
 
 const RoleSchema = mongoose.Schema({
@@ -6,7 +7,7 @@ const RoleSchema = mongoose.Schema({
         type : String
     },
     userId : {
-        type : Schema.Type.ObjectId,
+        type : Schema.Types.ObjectId,
         ref : "User"
     }
 })

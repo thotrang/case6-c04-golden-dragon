@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema(
             require: true,
             maxLenght: [10, 'please enter name description '],
         },
-        role: {
+        roleId: {
             type: Schema.Types.ObjectId,
             ref: 'Role',
             require: true,
