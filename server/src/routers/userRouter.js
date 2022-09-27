@@ -5,6 +5,6 @@ const router = express.Router();
 router.get('/staffs',userController.getStaff)
 router.get('',userController.getAll)
 router.delete(`/:id`,userController.deleteUser)
-router.post('/',userController.addUser)
+router.post('/',userController.addStaff)
 
 module.exports = router

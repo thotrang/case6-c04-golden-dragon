@@ -37,7 +37,7 @@ const UserSchema = new mongoose.Schema(
         avatar: {
             public_id: {
                 type: String,
-                required: true,
+                // required: true,
             },
             url: {
                 type: String,
@@ -50,13 +50,12 @@ const UserSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true,
-            maxLength: [10, 'max length 10'],
+            required: true
         },
-        cardId: {
+        cartId: {
             type: Schema.Types.ObjectId,
             ref: 'Cart',
-            required: true,
+            // required: true,
         },
     },
     {
