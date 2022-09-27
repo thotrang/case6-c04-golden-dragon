@@ -6,11 +6,11 @@ const { body, validationResult } = require('express-validator');
 const getStaff = async (req, res, next) => {
     try {
         let users = await User.find().populate('roleId', 'name');
-        let accountants = []
+        let staffs = []
         for (let user of users) {
             if (user.roleId) {
-                if (user.roleId.name == "accountant") {
-                    accountants.push(user)
+                if (user.roleId.name == "accountant" || user.roleId.name == "seller") {
+                    staffs.push(user)
                 }
             }
         }
@@ -115,10 +115,25 @@ const editUser = async (req, res, next) => {
     }
 }
 
+const getDetail = async (req,res,next) => {
+    try {
+        let id = req.params.id;
+            let user = await User.findById(id).populate('roleId', 'name');
+            if (!user) {
+                res.status(404).json();
+            } else {
+                res.status(200).json(user);
+            }
+
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}
 module.exports = {
     getStaff,
     getAll,
     deleteUser,
     addStaff,
-    editUser
+    editUser,
+    getDetail
 };
