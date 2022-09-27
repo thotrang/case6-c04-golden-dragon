@@ -29,6 +29,23 @@ const getAll = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
+const deleteUser = async (req, res, next) => {
+    let id = req.param.id;
+    try {
+        let user = await User.findById(id);
+        if (!user) {
+            res.status(404).json();
+        } else {
+            await user.delete();
+            res.status(204).json({
+                message: 'delete success'
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(400).json(err)
+    }
+}
 module.exports = {
     getAccountant,
     getAll
