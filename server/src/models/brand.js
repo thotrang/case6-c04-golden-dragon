@@ -6,8 +6,8 @@ const BrandSchema = new Schema({
         type: String,
         require: true
     },
-    image: [
-        {
+    image: {
+
             public_id : {
                 type : String,
                 require:true
@@ -16,8 +16,8 @@ const BrandSchema = new Schema({
                 type : String,
                 require : true
             }
-        }
-    ],
+    },
+
     description : {
         type : String,
         require : true
