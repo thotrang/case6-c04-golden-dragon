@@ -27,12 +27,10 @@ const UserSchema = new mongoose.Schema(
             maxLength: [10, 'max length 10'],
         },
         gender: {
-            type: String,
-            required: true,
+            type: String
         },
         dob: {
-            type: String,
-            required: true,
+            type: String
         },
         avatar: {
             public_id: {
@@ -46,21 +44,15 @@ const UserSchema = new mongoose.Schema(
         },
         address: {
             type: String,
-            required: true,
+            require: true,
         },
         password: {
             type: String,
-            required: true,
-            maxLength: [10, 'max length 10'],
-        },
-        cardId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Cart',
-            required: true,
-        },
+            required: true
+        }
     },
     {
         timestamps: true,
-    },
+    }
 );
 module.exports = mongoose.model('User', UserSchema);
