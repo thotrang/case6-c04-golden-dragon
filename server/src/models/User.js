@@ -4,59 +4,57 @@ const UserSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: [true,'please enter name description'],
-            maxLength: [10, 'max length 10 characters'],
+            required: [true, 'please enter name description'],
+            maxLength: [10, 'max length 10'], // quá ít
         },
         roleId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Role',
-            require: true,
+            // type: Schema.Types.ObjectId,
+            // ref: 'Role',
+            // required: true,
+            type: String,
+            default: 'user',
         },
         email: {
             type: String,
-            require: true,
+            required: true,
         },
         phone: {
             type: String,
-            require: true,
+            // required: true,
             maxLength: [10, 'max length 10'],
         },
         userName: {
             type: String,
-            require: true,
+            required: true,
             maxLength: [10, 'max length 10'],
         },
         gender: {
             type: String,
-            require: true,
+            default: 'Nam',
         },
         dob: {
             type: String,
-            require: true,
+            default: '7/9/2000',
         },
         avatar: {
-            public_id: {
-                type: String,
-                require: true,
-            },
-            url: {
-                type: String,
-                require: true,
-            },
+            // public_id: {
+            //     type: String,
+            //     required: true,
+            // },
+            // url: {
+            //     type: String,
+            //     required: true,
+            // },
+            type: String,
+            default: 'ảnh',
         },
         address: {
             type: String,
-            require: true,
+            // require: true,
         },
         password: {
             type: String,
             required: true,
-            maxLength: [10, 'max lenght 10'],
-        },
-        cardId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Cart',
-            require: true,
         },
     },
     {
