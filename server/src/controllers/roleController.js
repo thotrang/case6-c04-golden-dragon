@@ -1,4 +1,4 @@
-const Role = require('../models/role');
+const Role = require('../models/Role');
 
 const getRole = async (req, res, next) => {
     try {

@@ -1,19 +1,20 @@
-const User = require('../models/user');
-const Role = require('../models/role');
+const User = require('../models/User');
+const Role = require('../models/Role');
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
 
 const getStaff = async (req, res, next) => {
     try {
-        let users = await User.find().populate('roleId', 'name');
-        // let staffs = []
-        // for (let user of users) {
-        //     if (user.roleId) {
-        //         if (user.roleId.name == "accountant" || user.roleId.name == "seller") {
-        //             staffs.push(user)
-        //         }
-        //     }
-        // }
+
+        let users = await User.find().populate({
+            path: 'roleId',
+            match: { name: { $eq: "seller" } },
+            select: 'name'
+        })
+        let staffs = users.filter((staff) => {
+            return staff.roleId != null
+
+        })
         // let query = req.query.page;
         // let limit = 10;
         // let offset = 0;
@@ -23,8 +24,8 @@ const getStaff = async (req, res, next) => {
         // }
         // staffs = staffs.limit(limit).skip(offset)
         res.status(200).json(users)
-
-    } catch (err) {
+    }
+    catch (err) {
         console.log(err);
         res.status(400).json(err)
     }
@@ -82,7 +83,6 @@ const addStaff = async (req, res, next) => {
                     email: user.email
                 })
                 if (!checkEmail) {
-                    console.log(user.password);
                     user.password = await bcrypt.hash(user.password, 10);
                     let role = await Role.findOne({
                         name: user.roleId
@@ -153,21 +153,39 @@ const updateRoleUser = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
-const searchStaff =  async (req , res , next ) => {
+const searchUser = async (req, res, next) => {
     let search = req.params.q;
-    
+
     let cursor = await User.find({
-        '$or':[
-            {name:{$regex:search}}
+        '$or': [
+            { name: { $regex: search } }
         ]
     })
-    if(cursor){
+    if (cursor) {
         res.json(cursor)
-    }else{
+    } else {
         res.json({
-            message:'loi'
+            message: 'loi'
         })
     }
+}
+const searchStaff = async (req, res, next) => {
+    let q = req.params.q;
+
+    let users = await User.find().populate({
+        path: 'roleId',
+        match: { name: { $eq: "seller" } },
+        select: 'name'
+    })
+    let staffs = users.filter((staff) => {
+        return staff.roleId != null
+
+    })
+    let search = staffs.filter((staff)=>{
+        return staff.name.toLowerCase().includes(q.toLowerCase())
+    })
+    res.status(200).json(search)
+
 }
 module.exports = {
     getStaff,
@@ -177,5 +195,6 @@ module.exports = {
     editUser,
     getDetail,
     updateRoleUser,
-    searchStaff
+    searchStaff,
+    searchUser
 };
