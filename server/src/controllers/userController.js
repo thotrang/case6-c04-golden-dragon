@@ -45,6 +45,7 @@ const deleteUser = async (req, res, next) => {
             });
         } else {
             await user.delete();
+            await Role.updateMany({ _id: user.roleId }, { $pull: { users: user._id } });
             res.status(204).json({
                 message: 'delete success',
                 user: user
@@ -72,9 +73,11 @@ const addStaff = catchAsyncErrors(async (req, res, next) => {
                 user.password = await bcrypt.hash(user.password, 10);
                 let role = await Role.findOne({
                     name: user.roleId
-                })
+                }).populate('name')
                 user.roleId = role._id;
                 let newUser = await User.create(user);
+
+                await Role.updateMany({ _id: role._id }, { $push: { userId: user._id } });
                 res.status(200).json(newUser)
             } else {
                 res.status(500).json({
