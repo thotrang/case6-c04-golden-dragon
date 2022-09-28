@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6e992757d399b95e35ac1860c7382cc7d4e3abd3
 # React Material Admin Dashboard — Template
 
 React Admin is a React template 
@@ -87,6 +90,7 @@ Looking for custome theme development? Check out more [web app templates at zyka
 ## License
 
 [MIT](https://github.com/zykarsolutions/React-Material-UI-Admin/blob/main/LICENSE.md).
+<<<<<<< HEAD
 =======
 # Getting Started with Create React App
 
@@ -159,3 +163,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 >>>>>>> 7209790459bb77c9c695accccdd409d3e71b9f2c
+=======
+>>>>>>> 6e992757d399b95e35ac1860c7382cc7d4e3abd3

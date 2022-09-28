@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import List from "./pages/list/List";
@@ -41,6 +42,8 @@ function App() {
     </Routes>
   </BrowserRouter>
 =======
+=======
+>>>>>>> 6e992757d399b95e35ac1860c7382cc7d4e3abd3
 import logo from './logo.svg';
 import './App.css';
 
@@ -61,7 +64,10 @@ function App() {
           Learn React
         </a>
       </header>
+<<<<<<< HEAD
 >>>>>>> 7209790459bb77c9c695accccdd409d3e71b9f2c
+=======
+>>>>>>> 6e992757d399b95e35ac1860c7382cc7d4e3abd3
     </div>
   );
 }

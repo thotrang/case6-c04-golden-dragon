@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 
 const dotenv = require('dotenv').config();
 const router = require('./src/routers/router')
-
 const PORT = process.env.PORT
 const URL = process.env.MONGO0DB_URL
 
