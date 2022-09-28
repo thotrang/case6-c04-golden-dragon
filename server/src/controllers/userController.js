@@ -4,24 +4,17 @@ const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
 const catchAsyncErrors = require('../middleware/catchAsyncErrors')
 const getStaff = catchAsyncErrors(async (req, res, next) => {
-    let users = await User.find().populate({
-        path: 'roleId',
-        match: { name: { $eq: "seller" } },
-        select: 'name'
-    })
-    let staffs = users.filter((staff) => {
-        return staff.roleId != null
+    let users = await User.find().populate('roleId', 'name')
+    let staffs = []
+    for(let staff of users){
+        if(staff.roleId){
+            if(staff.roleId.name == "seller" || staff.roleId.name == "accountant"){
+                staffs.push(staff)
+            }
+        }
+    }
 
-    })
-    // let query = req.query.page;
-    // let limit = 10;
-    // let offset = 0;
-    // if (query) {
-    //     let page = + query;
-    //     offset = (page - 1) * limit
-    // }
-    // staffs = staffs.limit(limit).skip(offset)
-    res.status(200).json(users)
+    res.status(200).json(staffs)
 
 })
 const getAll = async (req, res, next) => {
