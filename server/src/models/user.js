@@ -27,17 +27,15 @@ const UserSchema = new mongoose.Schema(
             maxLength: [10, 'max length 10'],
         },
         gender: {
-            type: String,
-            required: true,
+            type: String
         },
         dob: {
-            type: String,
-            required: true,
+            type: String
         },
         avatar: {
             public_id: {
                 type: String,
-                // required: true,
+                required: true,
             },
             url: {
                 type: String,
@@ -46,20 +44,15 @@ const UserSchema = new mongoose.Schema(
         },
         address: {
             type: String,
-            required: true,
+            require: true,
         },
         password: {
             type: String,
             required: true
-        },
-        cartId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Cart',
-            // required: true,
-        },
+        }
     },
     {
         timestamps: true,
-    },
+    }
 );
 module.exports = mongoose.model('User', UserSchema);
