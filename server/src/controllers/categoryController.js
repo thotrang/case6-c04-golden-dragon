@@ -1,10 +1,10 @@
-const Discount = require("../models/Discount");
+const Category = require("../models/Category");
 
 // getAll
-const getAllDiscounts = async(req,res,next) => {
+const getAllCategory = async(req,res,next) => {
     try {
-        let discounts = await Discount.find()
-        res.status(200).json(discounts)
+        let categories = await Category.find()
+        res.status(200).json(categories)
     } catch(err) {
         console.log(err);
         res.status(400).json(err);
@@ -12,52 +12,52 @@ const getAllDiscounts = async(req,res,next) => {
     }
 };
 //create
-const createDiscount = async(req,res,next) => {
+const createCategory = async(req,res,next) => {
     try {
-        const discount =  await Discount.create(req.body)
+        const category =  await Category.create(req.body)
         res.status(200).json({
             message : "true",
-            discount
+            category
             })
     } catch(err) {
         console.log(err);
         res.status(400).json(err);
     }
 };
-//update discount
-const updateDiscount = async(req,res,next) =>{
+//update 
+const updateCategory = async(req,res,next) =>{
     let id = req.params.id;
     let name = req.body.name
     try {
-        let discount = await Discount.findById(id);
-        if (!discount) {
+        let category = await Category.findById(id);
+        if (!category) {
             res.status(404).json({message:"Discount not exist"});
         } else {
-             discount = await Discount.findByIdAndUpdate({
+            category = await Category.findByIdAndUpdate({
                 _id:id
             },{
                 name:name
             })
-            let newDiscount = await Discount.findById(id)
-            res.status(200).json(newDiscount)
+            let newCategory = await Category.findById(id)
+            res.status(200).json(newCategory)
         }
     } catch(err) {
         console.log(err);
         res.status(404).json(err)
     }
 }
-// delete discount
-const deleteDiscount = async(req,res,next) => {
+// delete Category
+const deleteCategory = async(req,res,next) => {
     let id = req.params.id
     try {
-     let discount = Discount.findById(id);
-     if(!discount) {
+     let category = Category.findById(id);
+     if(!category) {
         res.status(404).json({
             success : false,
-            message :"Discount not exist"
+            message :"Category not exist"
             })
      }  else {
-        await discount.delete();
+        await category.delete();
         res.status(200).json("Delete success!!")
      }
     } catch (err) {
@@ -67,9 +67,8 @@ const deleteDiscount = async(req,res,next) => {
 }
 
 module.exports = {
-    getAllDiscounts,
-    deleteDiscount,
-    createDiscount,
-    updateDiscount
+   getAllCategory,
+   createCategory,
+   updateCategory,
+   deleteCategory
 }
-
