@@ -2,34 +2,28 @@ const User = require('../models/User');
 const Role = require('../models/Role');
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
+const catchAsyncErrors = require('../middleware/catchAsyncErrors')
+const getStaff = catchAsyncErrors(async (req, res, next) => {
+    let users = await User.find().populate({
+        path: 'roleId',
+        match: { name: { $eq: "seller" } },
+        select: 'name'
+    })
+    let staffs = users.filter((staff) => {
+        return staff.roleId != null
 
-const getStaff = async (req, res, next) => {
-    try {
+    })
+    // let query = req.query.page;
+    // let limit = 10;
+    // let offset = 0;
+    // if (query) {
+    //     let page = + query;
+    //     offset = (page - 1) * limit
+    // }
+    // staffs = staffs.limit(limit).skip(offset)
+    res.status(200).json(users)
 
-        let users = await User.find().populate({
-            path: 'roleId',
-            match: { name: { $eq: "seller" } },
-            select: 'name'
-        })
-        let staffs = users.filter((staff) => {
-            return staff.roleId != null
-
-        })
-        // let query = req.query.page;
-        // let limit = 10;
-        // let offset = 0;
-        // if (query) {
-        //     let page = + query;
-        //     offset = (page - 1) * limit
-        // }
-        // staffs = staffs.limit(limit).skip(offset)
-        res.status(200).json(users)
-    }
-    catch (err) {
-        console.log(err);
-        res.status(400).json(err)
-    }
-}
+})
 const getAll = async (req, res, next) => {
     try {
         let query = req.query.page;
@@ -68,45 +62,42 @@ const deleteUser = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
-const addStaff = async (req, res, next) => {
-    try {
-        const errors = validationResult(req);
-        let user = req.body;
-        if (!errors.isEmpty()) {
-            return res.status(422).send({ errMessage: errors.array() });
-        } else {
-            let checkName = await User.findOne({
-                userName: user.userName
+const addStaff = catchAsyncErrors(async (req, res, next) => {
+    const errors = validationResult(req);
+    let user = req.body;
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errMessage: errors.array() });
+    } else {
+        let checkName = await User.findOne({
+            userName: user.userName
+        })
+        if (!checkName) {
+            let checkEmail = await User.findOne({
+                email: user.email
             })
-            if (!checkName) {
-                let checkEmail = await User.findOne({
-                    email: user.email
+            if (!checkEmail) {
+                user.password = await bcrypt.hash(user.password, 10);
+                let role = await Role.findOne({
+                    name: user.roleId
                 })
-                if (!checkEmail) {
-                    user.password = await bcrypt.hash(user.password, 10);
-                    let role = await Role.findOne({
-                        name: user.roleId
-                    })
-                    user.roleId = role._id;
-                    let newUser = await User.create(user);
-                    res.status(200).json(newUser)
-                } else {
-                    res.status(500).json({
-                        message: 'email was existed'
-                    })
-                }
-
+                user.roleId = role._id;
+                let newUser = await User.create(user);
+                res.status(200).json(newUser)
             } else {
                 res.status(500).json({
-                    message: 'userName was existed'
+                    message: 'email was existed'
                 })
             }
 
+        } else {
+            res.status(500).json({
+                message: 'userName was existed'
+            })
         }
-    } catch (err) {
-        res.status(400).json(err)
+
     }
-}
+
+})
 const editUser = async (req, res, next) => {
     try {
 
@@ -153,7 +144,7 @@ const updateRoleUser = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
-const searchUser = async (req, res, next) => {
+const searchUser = catchAsyncErrors(async (req, res, next) => {
     let search = req.params.q;
 
     let cursor = await User.find({
@@ -168,7 +159,7 @@ const searchUser = async (req, res, next) => {
             message: 'loi'
         })
     }
-}
+})
 const searchStaff = async (req, res, next) => {
     let q = req.params.q;
 
@@ -181,7 +172,7 @@ const searchStaff = async (req, res, next) => {
         return staff.roleId != null
 
     })
-    let search = staffs.filter((staff)=>{
+    let search = staffs.filter((staff) => {
         return staff.name.toLowerCase().includes(q.toLowerCase())
     })
     res.status(200).json(search)
