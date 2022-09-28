@@ -6,10 +6,10 @@ const DiscountSchema = new Schema({
         required : true,
         type : String
     },
-    productId :[{
+    productId :{
         type : Schema.Types.ObjectId,
         ref : "Product"
-    }]
+    }
 })
 
 module.exports = mongoose.model("Discount",DiscountSchema);
