@@ -27,9 +27,27 @@ const ProductSchema = new Schema(
                 },
             },
         ],
-        comment: {
-            type: String,
-        },
+        reviews: [
+            {
+                user: {
+                    type: mongoose.Schema.ObjectId,
+                    ref: "User",
+                    required: true,
+                },
+                name: {
+                    type: String,
+                    required: true,
+                },
+                rating: {
+                    type: Number,
+                    required: true,
+                },
+                comment: {
+                    type: String,
+                    required: true,
+                },
+            },
+        ],
         rating: {
             type: Number,
             default: 0,

@@ -5,43 +5,41 @@ const UserSchema = new mongoose.Schema(
         name: {
             type: String,
             required: [true,'please enter name description'],
-            maxLength: [10, 'max length 10 characters'],
+            maxLength: [10, 'max length 10'],
         },
         roleId: {
             type: Schema.Types.ObjectId,
             ref: 'Role',
-            require: true,
+            required: true,
         },
         email: {
             type: String,
-            require: true,
+            required: true,
         },
         phone: {
             type: String,
-            require: true,
+            required: true,
             maxLength: [10, 'max length 10'],
         },
         userName: {
             type: String,
-            require: true,
+            required: true,
             maxLength: [10, 'max length 10'],
         },
         gender: {
-            type: String,
-            require: true,
+            type: String
         },
         dob: {
-            type: String,
-            require: true,
+            type: String
         },
         avatar: {
             public_id: {
                 type: String,
-                require: true,
+                required: true,
             },
             url: {
                 type: String,
-                require: true,
+                required: true,
             },
         },
         address: {
@@ -50,17 +48,11 @@ const UserSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true,
-            maxLength: [10, 'max lenght 10'],
-        },
-        cardId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Cart',
-            require: true,
-        },
+            required: true
+        }
     },
     {
         timestamps: true,
-    },
+    }
 );
 module.exports = mongoose.model('User', UserSchema);
