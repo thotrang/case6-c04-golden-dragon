@@ -57,7 +57,7 @@ const deleteDiscount = async(req,res,next) => {
             message :"Discount not exist"
             })
      }  else {
-        await discount.remove();
+        await discount.delete();
         res.status(200).json("Delete success!!")
      }
     } catch (err) {
