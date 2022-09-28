@@ -4,10 +4,10 @@ const UserSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            require: true,
-            maxLength: [10, 'please enter name description '],
+            required: [true,'please enter name description'],
+            maxLength: [10, 'max length 10 characters'],
         },
-        role: {
+        roleId: {
             type: Schema.Types.ObjectId,
             ref: 'Role',
             require: true,
@@ -19,12 +19,12 @@ const UserSchema = new mongoose.Schema(
         phone: {
             type: String,
             require: true,
-            maxLength: [10, 'please enter phone description '],
+            maxLength: [10, 'max length 10'],
         },
         userName: {
             type: String,
             require: true,
-            maxLenght: [10, 'please enter username description '],
+            maxLength: [10, 'max length 10'],
         },
         gender: {
             type: String,
@@ -50,8 +50,8 @@ const UserSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            require: true,
-            maxLenght: [10, 'please enter password description '],
+            required: true,
+            maxLength: [10, 'max lenght 10'],
         },
         cardId: {
             type: Schema.Types.ObjectId,
