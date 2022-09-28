@@ -1,16 +1,12 @@
 const express = require('express');
 const router = express.Router();
-<<<<<<< HEAD
+
 const userRouter = require('./userRouter');
 const roleRouter = require('./roleRouter');
 const authRouter = require('../controllers/authController');
-=======
-const userRouter = require('./userRouter')
-const roleRouter = require('./roleRouter')
-const productRouter = require('./productRouter')
+const productRouter = require('./productRouter');
 
-router.use('/admin',productRouter)
->>>>>>> son
+router.use('/admin', productRouter);
 
 router.use('', authRouter);
 router.use('/user', userRouter);
