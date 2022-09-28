@@ -1,66 +1,66 @@
-
-const { Schema } = require("mongoose");
-const mongoose = require('mongoose')
-const UserSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        require: true,
-        maxLenght: [10, 'please enter name description ']
-
-    },
-    role: {
-        type: Schema.Types.ObjectId,
-        ref: 'Role',
-        require: true
-    },
-    email: {
-        type: String,
-        require: true
-    },
-    phone: {
-        type: String,
-        require: true,
-        maxLenght: [10, 'please enter phone description ']
-
-    },
-    userName: {
-        type: String,
-        require: true,
-        maxLenght: [10, 'please enter username description ']
-
-    },
-    gender: {
-        type: String,
-        require: true
-    },
-    dob: {
-        type: String,
-        require: true
-    },
-    avatar: {
-        public_id: {
+const { Schema } = require('mongoose');
+const mongoose = require('mongoose');
+const UserSchema = new mongoose.Schema(
+    {
+        name: {
             type: String,
-            require: true
+            required: [true,'please enter name description'],
+            maxLength: [10, 'max length 10'],
         },
-        url: {
+        roleId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Role',
+            required: true,
+        },
+        email: {
             type: String,
-            require: true
-        }
+            required: true,
+        },
+        phone: {
+            type: String,
+            required: true,
+            maxLength: [10, 'max length 10'],
+        },
+        userName: {
+            type: String,
+            required: true,
+            maxLength: [10, 'max length 10'],
+        },
+        gender: {
+            type: String,
+            required: true,
+        },
+        dob: {
+            type: String,
+            required: true,
+        },
+        avatar: {
+            public_id: {
+                type: String,
+                required: true,
+            },
+            url: {
+                type: String,
+                required: true,
+            },
+        },
+        address: {
+            type: String,
+            required: true,
+        },
+        password: {
+            type: String,
+            required: true,
+            maxLength: [10, 'max length 10'],
+        },
+        cardId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Cart',
+            required: true,
+        },
     },
-    address: {
-        type: String,
-        require: true
+    {
+        timestamps: true,
     },
-    password: {
-        type: String,
-        require: true,
-        maxLenght: [10, 'please enter password description ']
-    },
-    cardId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Cart',
-        require: true
-    }
-
-})
-module.exports = mongoose.model('User', UserSchema)
+);
+module.exports = mongoose.model('User', UserSchema);

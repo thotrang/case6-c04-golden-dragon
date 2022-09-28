@@ -4,7 +4,7 @@ const cors = require("cors");
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config();
-
+const router = require('./src/routers/router')
 const PORT = process.env.PORT
 const URL = process.env.MONGO0DB_URL
 
@@ -20,6 +20,7 @@ const connectDatabase = () => {
     })
 }
 connectDatabase();
+app.use('', router)
 app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`)
 })
