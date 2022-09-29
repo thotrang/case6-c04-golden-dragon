@@ -87,7 +87,7 @@ const login = async (req, res, next) => {
     }
     try {
         // Check for existing user( xem người dùng có tồn tại hay không)
-        const user = await User.findOne({ userName });
+        const user = await User.findOne({ userName }).populate('roleId', 'name')
         if (!user) {
             return res.status(400).json({ success: false, message: 'tài khoản không đúng' });
         }
@@ -100,11 +100,12 @@ const login = async (req, res, next) => {
             // All good
             // Return token
             const accessToken = jwt.sign(
-                {
+                {   
                     userId: user._id,
+                    role: user.roleId.name,
                 },
                 process.env.SECRET_KEY,
-                { expiresIn: 36000 },
+                { expiresIn: 36000 }
             );
             res.status(200).json({ success: true, message: 'người dùng đăng nhập thành công', accessToken });
             next()

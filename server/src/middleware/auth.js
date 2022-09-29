@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-// Authorization: Bearer ajkgnklnakfb;
-
 const verifyToken = (req, res, next) => {
     try {
         let authorization = req.headers.authorization;
@@ -16,7 +14,8 @@ const verifyToken = (req, res, next) => {
             } else {
                 let token = accessToken.substring(1,(accessToken.length-1))
                 const decoded = jwt.verify(token, process.env.SECRET_KEY);
-                req.userId = decoded.userId;
+                console.log(decoded);
+                req.user = decoded;
                 next();
                
             }

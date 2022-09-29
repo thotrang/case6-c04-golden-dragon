@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 
-router.use(auth)
+// router.use(auth)
 router.get('/staffs',userController.getStaff)
 router.get('',userController.getAll)
 router.get('/:id',userController.getDetail)
