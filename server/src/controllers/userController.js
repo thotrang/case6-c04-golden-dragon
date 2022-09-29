@@ -134,7 +134,7 @@ const updateUser = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
-
+// Chua xong
 const updatePassword = async (req, res, next) => {
     try {
         let id = req.params.id;
