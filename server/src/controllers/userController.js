@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const Role = require('../models/Role');
 const bcrypt = require('bcrypt');
+const jwt =require("jsonwebtoken");
+
 const { body, validationResult } = require('express-validator');
 const catchAsyncErrors = require('../middleware/catchAsyncErrors')
 const getStaff = catchAsyncErrors(async (req, res, next) => {
@@ -136,7 +138,7 @@ const updateUser = async (req, res, next) => {
 const updatePassword = async (req, res, next) => {
     try {
         let id = req.params.id;
-        let edit = req.body;
+        let editPassword = req.body;
 
         let user = await User.findById(id).populate('roleId', 'name');
         if (!user) {
@@ -149,7 +151,6 @@ const updatePassword = async (req, res, next) => {
                 _id: id
             }, {
                 name: edit.name,
-
             });
             user = await User.findById(id).populate('roleId', 'name');
             res.status(200).json(user);
