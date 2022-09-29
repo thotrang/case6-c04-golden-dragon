@@ -5,7 +5,6 @@ const UserSchema = new mongoose.Schema(
         name: {
             type: String,
             required: [true,'please enter name description'],
-            maxLength: [10, 'max length 10 characters'],
         },
         roleId: {
             type: Schema.Types.ObjectId,
@@ -51,13 +50,8 @@ const UserSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
-            maxLength: [10, 'max lenght 10'],
         },
-        cardId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Cart',
-            require: true,
-        },
+        
     },
     {
         timestamps: true,
