@@ -4,25 +4,25 @@ const UserSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: [true,'please enter name description'],
+            required: [true, 'please enter name description'],
         },
         roleId: {
             type: Schema.Types.ObjectId,
             ref: 'Role',
-            require: true,
+            required: true,
         },
         email: {
             type: String,
-            require: true,
+            required: true,
         },
         phone: {
             type: String,
-            require: true,
+            required: true,
             maxLength: [10, 'max length 10'],
         },
         userName: {
             type: String,
-            require: true,
+            required: true,
             maxLength: [10, 'max length 10'],
         },
         gender: {
@@ -36,11 +36,11 @@ const UserSchema = new mongoose.Schema(
         avatar: {
             public_id: {
                 type: String,
-                require: true,
+                required: true,
             },
             url: {
                 type: String,
-                require: true,
+                required: true,
             },
         },
         address: {
