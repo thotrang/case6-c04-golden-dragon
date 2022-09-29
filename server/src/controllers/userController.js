@@ -94,9 +94,24 @@ const addStaff = catchAsyncErrors(async (req, res, next) => {
     }
 
 })
-const editUser = async (req, res, next) => {
+// 
+const updateUser = async (req, res, next) => {
     try {
+        let id = req.params.id;
+        let editUser = req.body;
+        let user = await User.findById(id).populate('roleId', 'name');
+        if (!user) {
+            res.status(404).json({
+                message:"tài khoản không tồn tại "
+            });
 
+        } else {
+            await User.findOneAndUpdate({
+                _id: id
+            }, editUser);
+            user = await User.findById(id).populate('roleId', 'name');
+            res.status(200).json(user);
+        }
     } catch (err) {
         res.status(400).json(err)
     }
@@ -179,7 +194,7 @@ module.exports = {
     getAll,
     deleteUser,
     addStaff,
-    editUser,
+    updateUser,
     getDetail,
     updateRoleUser,
     searchStaff,
