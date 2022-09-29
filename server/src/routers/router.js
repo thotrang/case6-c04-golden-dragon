@@ -3,7 +3,7 @@ const router = express.Router();
 
 const userRouter = require('./userRouter');
 const roleRouter = require('./roleRouter');
-const authRouter = require('../controllers/authController');
+const authRouter = require('./authRouter');
 const productRouter = require('./productRouter');
 
 router.use('/admin', productRouter);
