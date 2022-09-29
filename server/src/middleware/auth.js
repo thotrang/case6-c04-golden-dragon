@@ -3,19 +3,29 @@ const jwt = require('jsonwebtoken');
 // Authorization: Bearer ajkgnklnakfb;
 
 const verifyToken = (req, res, next) => {
-    const authHeader = req.header('Authorization');
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) {
-        res.status(401).json({ success: false, message: 'không tìm thấy mã token' });
-    }
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        let authorization = req.headers.authorization;
+        if (!authorization) {
+            res.status(401).json({
+                message: "có token mà hàng lởm "
+            })
+        } else {
+            let accessToken = authorization.split(' ')[1];
+            if (!accessToken) {
+                res.status(401).json({ success: false, message: 'không tìm thấy mã token' });
+            } else {
+                let token = accessToken.substring(1,(accessToken.length-1))
+                const decoded = jwt.verify(token, process.env.SECRET_KEY);
+                req.userId = decoded.userId;
+                next();
+               
+            }
+        }
 
-        req.userId = decoded.userId;
-        next();
     } catch (error) {
-        return res.status(403).json({ success: false, message: 'có token mà hàng lởm' });
+        return res.status(403).json({ success: false, message: 'có token mà hàng lởm 1', err: error });
     }
 };
 
 module.exports = verifyToken;
+

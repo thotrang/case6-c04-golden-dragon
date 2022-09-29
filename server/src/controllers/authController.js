@@ -110,7 +110,7 @@ const login = async (req, res, next) => {
             next()
         }
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500).json({ success: false, message: 'Internal server error'});
     }
 };
 module.exports = {
