@@ -5,14 +5,11 @@ const UserSchema = new mongoose.Schema(
         name: {
             type: String,
             required: [true, 'please enter name description'],
-            maxLength: [10, 'max length 10'], // quá ít
         },
         roleId: {
-            // type: Schema.Types.ObjectId,
-            // ref: 'Role',
-            // required: true,
-            type: String,
-            default: 'user',
+            type: Schema.Types.ObjectId,
+            ref: 'Role',
+            required: true,
         },
         email: {
             type: String,
@@ -20,7 +17,7 @@ const UserSchema = new mongoose.Schema(
         },
         phone: {
             type: String,
-            // required: true,
+            required: true,
             maxLength: [10, 'max length 10'],
         },
         userName: {
@@ -30,27 +27,25 @@ const UserSchema = new mongoose.Schema(
         },
         gender: {
             type: String,
-            default: 'Nam',
+            require: true,
         },
         dob: {
             type: String,
-            default: '7/9/2000',
+            require: true,
         },
         avatar: {
-            // public_id: {
-            //     type: String,
-            //     required: true,
-            // },
-            // url: {
-            //     type: String,
-            //     required: true,
-            // },
-            type: String,
-            default: 'ảnh',
+            public_id: {
+                type: String,
+                required: true,
+            },
+            url: {
+                type: String,
+                required: true,
+            },
         },
         address: {
             type: String,
-            // require: true,
+            require: true,
         },
         password: {
             type: String,

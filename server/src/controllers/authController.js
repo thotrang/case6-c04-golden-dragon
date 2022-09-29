@@ -6,13 +6,14 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
+const Role = require('../models/Role');
 
 // @route POST /register
 // @description Register user (mô tả)
 // access Public (trạng thái)
 
 router.post('/register', async (req, res) => {
-    const { userName, password, name, email, gender } = req.body;
+    const { userName, password, name, email, phone, address } = req.body;
     // console.log(req.body);
 
     // Simple validation (xác nhận đơn giản)
@@ -23,9 +24,9 @@ router.post('/register', async (req, res) => {
     if (!name || !email) {
         return res.status(400).json({ success: false, message: 'không có name and/or email' });
     }
-    // if (!phone || !address) {
-    //     return res.status(400).json({ success: false, message: 'không có phone and/or địa chỉ' });
-    // }
+    if (!phone || !address) {
+        return res.status(400).json({ success: false, message: 'không có phone and/or địa chỉ' });
+    }
     try {
         // Check for existing userName( xem người dùng có tồn tại hay không)
         const checkUsername = await User.findOne({ userName });
@@ -38,19 +39,26 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ success: false, message: 'đả tồn tại email đăng kí' });
         }
         // Check for existing phone( xem số điện thoại có tồn tại hay không)
-        // const checkPhone = await User.findOne({ phone });
-        // if (checkPhone) {
-        //     return res.status(400).json({ success: false, message: 'đả tồn tại số điện thoại đăng kí' });
-        // }
+        const checkPhone = await User.findOne({ phone });
+        if (checkPhone) {
+            return res.status(400).json({ success: false, message: 'đả tồn tại số điện thoại đăng kí' });
+        }
 
         //all good
+        const roleUser = await Role.findOne({ name: 'user' }).populate('userId');
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({
             userName,
             password: hashedPassword,
             name,
             email,
-            gender,
+            phone,
+            address,
+            roleId: roleUser._id,
+            avatar: {
+                public_id: 'a',
+                url: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/11/20/975861/5-Giong-Cho-Long-Xu-.jpg',
+            },
         });
         // console.log(newUser);
         try {
