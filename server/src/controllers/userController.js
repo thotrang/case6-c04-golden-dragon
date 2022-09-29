@@ -44,7 +44,7 @@ const deleteUser = async (req, res, next) => {
                 message: 'not found'
             });
         } else {
-            await user.delete();
+            await user.deleteOne();
             await Role.updateMany({ _id: user.roleId }, { $pull: { users: user._id } });
             res.status(204).json({
                 message: 'delete success',
