@@ -12,7 +12,7 @@ const Role = require('../models/Role');
 // @description Register user (mô tả)
 // access Public (trạng thái)
 
-router.post('/register', async (req, res) => {
+const register = async (req, res, next) => {
     const { userName, password, name, email, phone, address } = req.body;
     // console.log(req.body);
 
@@ -68,16 +68,17 @@ router.post('/register', async (req, res) => {
         }
         //Return token
         res.json({ success: true, message: 'đăng kí thành công', newUser });
+        next()
     } catch (error) {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
-});
+};
 
 // @route POST /login
 // @description Register user (mô tả)
 // access Public (trạng thái)
 
-router.post('/login', async (req, res) => {
+const login = async (req, res, next) => {
     const { userName, password } = req.body;
     // console.log(req.body);
     // Simple validation (xác nhận đơn giản)
@@ -105,10 +106,14 @@ router.post('/login', async (req, res) => {
                 process.env.SECRET_KEY,
                 { expiresIn: 36000 },
             );
-            res.json({ success: true, message: 'người dùng đăng nhập thành công', accessToken });
+            res.status(200).json({ success: true, message: 'người dùng đăng nhập thành công', accessToken });
+            next()
         }
     } catch (error) {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
-});
-module.exports = router;
+};
+module.exports = {
+    login,
+    register
+};
