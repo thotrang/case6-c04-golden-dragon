@@ -62,7 +62,7 @@ exports.deleteProduct = async (req,res,next)=>{
             message:"product not found"
         })
     }
-    await  product.remove()
+    await  product.deleteOne()
     res.status(200).json({
         success:true,
         message:"delete success"
