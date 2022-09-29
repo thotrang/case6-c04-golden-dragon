@@ -6,9 +6,9 @@ const catchAsyncErrors = require('../middleware/catchAsyncErrors')
 const getStaff = catchAsyncErrors(async (req, res, next) => {
     let users = await User.find().populate('roleId', 'name')
     let staffs = []
-    for(let staff of users){
-        if(staff.roleId){
-            if(staff.roleId.name == "seller" || staff.roleId.name == "accountant"){
+    for (let staff of users) {
+        if (staff.roleId) {
+            if (staff.roleId.name == "seller" || staff.roleId.name == "accountant") {
                 staffs.push(staff)
             }
         }
@@ -98,17 +98,59 @@ const addStaff = catchAsyncErrors(async (req, res, next) => {
 const updateUser = async (req, res, next) => {
     try {
         let id = req.params.id;
-        let editUser = req.body;
+        let edit = req.body;
+
         let user = await User.findById(id).populate('roleId', 'name');
         if (!user) {
             res.status(404).json({
-                message:"tài khoản không tồn tại "
+                message: "tài khoản không tồn tại "
+            });
+
+        } else {
+
+
+            await User.findOneAndUpdate({
+                _id: id
+            }, {
+                $set: {
+                    name : edit.name,
+                    email : edit.email,
+                    phone : edit.phone,
+                    gender : edit.gender,
+                    dob : edit.dob,
+                    avatar : edit.avatar,
+                    address : edit.address
+                }
+            });
+            user = await User.findById(id).populate('roleId', 'name');
+            res.status(200).json({
+                user: user,
+                message: "update success"
+            });
+        }
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}
+
+const updatePassword = async (req, res, next) => {
+    try {
+        let id = req.params.id;
+        let edit = req.body;
+
+        let user = await User.findById(id).populate('roleId', 'name');
+        if (!user) {
+            res.status(404).json({
+                message: "tài khoản không tồn tại "
             });
 
         } else {
             await User.findOneAndUpdate({
                 _id: id
-            }, editUser);
+            }, {
+                name: edit.name,
+
+            });
             user = await User.findById(id).populate('roleId', 'name');
             res.status(200).json(user);
         }
