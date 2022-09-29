@@ -48,10 +48,7 @@ const deleteUser = async (req, res, next) => {
         } else {
             await user.deleteOne();
             await Role.updateMany({ _id: user.roleId }, { $pull: { users: user._id } });
-            res.status(204).json({
-                message: 'delete success',
-                user: user
-            });
+            res.status(200).json(user);
         }
     } catch (err) {
         console.log(err);
