@@ -19,13 +19,13 @@ const register = async (req, res) => {
     // Simple validation (xác nhận đơn giản)
 
     if (!userName || !password) {
-        return res.status(400).json({ success: false, message: 'không có username and/or password' });
+        return res.status(400).json({ success: false, message: 'Không có username and/or password' });
     }
     if (!name || !email) {
-        return res.status(400).json({ success: false, message: 'không có name and/or email' });
+        return res.status(400).json({ success: false, message: 'Không có name and/or email' });
     }
     if (!phone || !address) {
-        return res.status(400).json({ success: false, message: 'không có phone and/or địa chỉ' });
+        return res.status(400).json({ success: false, message: 'Không có phone and/or địa chỉ' });
     }
     try {
         // Check for existing userName( xem người dùng có tồn tại hay không)
@@ -84,19 +84,19 @@ const login = async (req, res) => {
     // console.log(req.body);
     // Simple validation (xác nhận đơn giản)
     if (!userName || !password) {
-        return res.status(400).json({ success: false, message: 'không có username and/or password' });
+        return res.status(400).json({ success: false, message: 'Không có username and/or password' });
     }
     try {
         // Check for existing user( xem người dùng có tồn tại hay không)
         const user = await User.findOne({ userName });
         if (!user) {
-            return res.status(400).json({ success: false, message: 'tài khoản không đúng' });
+            return res.status(400).json({ success: false, message: 'Tài khoản hoặc mật khẩu không đúng' });
         }
         // Username found (tên đăng nhập đúng=> check pass)
         const passwordValid = await bcrypt.compare(password, user.password);
 
         if (!passwordValid) {
-            return res.status(400).json({ success: false, message: 'mật khẩu không đúng' });
+            return res.status(400).json({ success: false, message: 'tài khoản hoặc mật khẩu không đúng' });
         } else {
             // All good
             // Return token
