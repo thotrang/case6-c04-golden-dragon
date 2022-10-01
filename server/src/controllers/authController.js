@@ -100,18 +100,23 @@ const login = async (req, res, next) => {
             // All good
             // Return token
             const accessToken = jwt.sign(
-                {   
+                {
                     userId: user._id,
                     role: user.roleId.name,
                 },
                 process.env.SECRET_KEY,
                 { expiresIn: 36000 }
             );
-            res.status(200).json({ success: true, message: 'người dùng đăng nhập thành công', accessToken });
+            res.status(200).json({
+                success: true,
+                message: 'người dùng đăng nhập thành công',
+                accessToken,
+                user:user
+            });
             next()
         }
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Internal server error'});
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
 module.exports = {
