@@ -19,15 +19,19 @@ const getStaff = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json(staffs)
 
 })
+// lấy danh sách khách hàng
 const getAll = async (req, res, next) => {
     try {
-        let query = req.query.page;
-        if (query) {
-            let page = + query;
-            offset = (page - 1) * limit
-        }
         let users = await User.find().populate('roleId', 'name')
-        res.status(200).json(users)
+        let employees = [];
+        for (let user of users) {
+            if (staff.roleId) {
+                if (user.roleId.name == "user") {
+                    employees.push(user)
+                }
+            }
+        }
+        res.status(200).json(employees)
 
     } catch (err) {
         console.log(err);
