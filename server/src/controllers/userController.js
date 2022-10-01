@@ -25,7 +25,7 @@ const getAll = async (req, res, next) => {
         let users = await User.find().populate('roleId', 'name')
         let employees = [];
         for (let user of users) {
-            if (staff.roleId) {
+            if (user.roleId) {
                 if (user.roleId.name == "user") {
                     employees.push(user)
                 }
