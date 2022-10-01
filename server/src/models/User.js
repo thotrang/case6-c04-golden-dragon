@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: [true,'please enter name description'],
             maxLength: [10, 'max length 10'],
+
         },
         roleId: {
             type: Schema.Types.ObjectId,
@@ -48,8 +49,8 @@ const UserSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true
-        }
+            required: true,
+        },
     },
     {
         timestamps: true,

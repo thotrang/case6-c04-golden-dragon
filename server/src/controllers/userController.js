@@ -1,14 +1,16 @@
 const User = require('../models/User');
 const Role = require('../models/Role');
 const bcrypt = require('bcrypt');
+const jwt =require("jsonwebtoken");
+
 const { body, validationResult } = require('express-validator');
 const catchAsyncErrors = require('../middleware/catchAsyncErrors')
 const getStaff = catchAsyncErrors(async (req, res, next) => {
     let users = await User.find().populate('roleId', 'name')
     let staffs = []
-    for(let staff of users){
-        if(staff.roleId){
-            if(staff.roleId.name == "seller" || staff.roleId.name == "accountant"){
+    for (let staff of users) {
+        if (staff.roleId) {
+            if (staff.roleId.name == "seller" || staff.roleId.name == "accountant") {
                 staffs.push(staff)
             }
         }
@@ -44,12 +46,9 @@ const deleteUser = async (req, res, next) => {
                 message: 'not found'
             });
         } else {
-            await user.delete();
+            await user.deleteOne();
             await Role.updateMany({ _id: user.roleId }, { $pull: { users: user._id } });
-            res.status(204).json({
-                message: 'delete success',
-                user: user
-            });
+            res.status(200).json(user);
         }
     } catch (err) {
         console.log(err);
@@ -94,9 +93,65 @@ const addStaff = catchAsyncErrors(async (req, res, next) => {
     }
 
 })
-const editUser = async (req, res, next) => {
+// 
+const updateUser = async (req, res, next) => {
     try {
+        let id = req.params.id;
+        let edit = req.body;
 
+        let user = await User.findById(id).populate('roleId', 'name');
+        if (!user) {
+            res.status(404).json({
+                message: "tài khoản không tồn tại "
+            });
+
+        } else {
+
+
+            await User.findOneAndUpdate({
+                _id: id
+            }, {
+                $set: {
+                    name : edit.name,
+                    email : edit.email,
+                    phone : edit.phone,
+                    gender : edit.gender,
+                    dob : edit.dob,
+                    avatar : edit.avatar,
+                    address : edit.address
+                }
+            });
+            user = await User.findById(id).populate('roleId', 'name');
+            res.status(200).json({
+                user: user,
+                message: "update success"
+            });
+        }
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}
+// Chua xong
+const updatePassword = async (req, res, next) => {
+    try {
+        let id = req.params.id;
+        let editPassword = req.body;
+
+        let user = await User.findById(id).populate('roleId', 'name');
+        if (!user) {
+            res.status(404).json({
+                message: "tài khoản không tồn tại "
+            });
+
+        } else {
+            await User.findOneAndUpdate({
+                _id: id
+            }, {
+                name: edit.name,
+            });
+            user = await User.findById(id).populate('roleId', 'name');
+            res.status(200).json(user);
+        }
     } catch (err) {
         res.status(400).json(err)
     }
@@ -181,7 +236,7 @@ module.exports = {
     getAll,
     deleteUser,
     addStaff,
-    editUser,
+    updateUser,
     getDetail,
     updateRoleUser,
     searchStaff,
