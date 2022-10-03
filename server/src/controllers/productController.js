@@ -14,7 +14,6 @@ exports.createProduct =   async (req,res,next) =>{
 //getAll
 exports.getAllProducts = async (req,res) =>{
     const resultPerPage = 10;
-    const productsCount = await Product.countDocuments()
     const  apiFeature = new ApiFeatures(Product.find(),req.query)
         .search()
         .filter()
@@ -25,13 +24,7 @@ exports.getAllProducts = async (req,res) =>{
     // products = await  apiFeature.query
 
     res.status(200).json(
-        {
-            message:"true",
-            products,
-            productsCount
-            // resultPerPage,
-            // filteredProductsCount,
-        }
+            products
     )
 }
 //update-admin

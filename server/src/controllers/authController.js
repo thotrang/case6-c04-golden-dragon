@@ -101,8 +101,7 @@ const login = async (req, res, next) => {
             // Return token
             const accessToken = jwt.sign(
                 {
-                    userId: user._id,
-                    role: user.roleId.name,
+                    user:user
                 },
                 process.env.SECRET_KEY,
                 { expiresIn: 36000 }
@@ -110,8 +109,7 @@ const login = async (req, res, next) => {
             res.status(200).json({
                 success: true,
                 message: 'người dùng đăng nhập thành công',
-                accessToken,
-                user:user
+                accessToken
             });
             next()
         }
