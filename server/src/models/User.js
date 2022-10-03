@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema(
         name: {
             type: String,
             required: [true, 'please enter name description'],
+            minLength: [4, "min length 4"]
         },
         roleId: {
             type: Schema.Types.ObjectId,
@@ -24,6 +25,7 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
             maxLength: [10, 'max length 10'],
+            minLength: [4, "min length 4"],
         },
         gender: {
             type: String,
