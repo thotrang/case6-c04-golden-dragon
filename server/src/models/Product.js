@@ -34,11 +34,11 @@ const ProductSchema = new Schema(
             type: Number,
             default: 0,
         },
-        categoryId: {
+        category: {
             type: Schema.Types.ObjectId,
             ref: 'Category',
         },
-        brandId: {
+        brand: {
             type: Schema.Types.ObjectId,
             ref: 'Brand',
         },
@@ -46,7 +46,7 @@ const ProductSchema = new Schema(
     {
         timestamps: true,
     },
-    { strict: false }
+    
 );
 
 module.exports = mongoose.model('Product', ProductSchema);
