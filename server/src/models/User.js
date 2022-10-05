@@ -28,12 +28,10 @@ const UserSchema = new mongoose.Schema(
             minLength: [4, "min length 4"],
         },
         gender: {
-            type: String,
-            require: true,
+            type: String
         },
         dob: {
-            type: String,
-            require: true,
+            type: String
         },
         avatar: {
             public_id: {
@@ -46,14 +44,18 @@ const UserSchema = new mongoose.Schema(
             },
         },
         address: {
-            type: String,
-            require: true,
+            type: String
         },
         password: {
             type: String,
             required: true,
         },
+        discounts: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Discount'
         
+        }]
+
     },
     {
         timestamps: true,
