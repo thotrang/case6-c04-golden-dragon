@@ -81,11 +81,24 @@ const deleteProduct = async (req, res, next) => {
 }
 // get Detail
 const getDetail = async(req,res,next) => {
+    try {
+        let id = req.params.id;
+        let product = await Product.findById(id).populate('category','name').populate('brand','name');
+        if(!product) {
+            res.status(404).json();
+        } else {
+            res.status(200).json(product);
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(404).json(err)
+    }
     
 }
 module.exports = {
     createProduct,
     getAllProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getDetail
 }
