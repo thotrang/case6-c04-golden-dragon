@@ -12,7 +12,7 @@ const getAllProduct = async (req, res, next) => {
     const skip = (page - 1) * perPage;
     try {
         const count = await Product.find().countDocuments();
-        const product = await Product.find().populate("category", "name").populate("brand", "name")
+        const product = await Product.find().populate('category', 'name').populate('brand', 'name')
             .skip(skip)
             .limit(perPage);
         console.log(product)
@@ -29,8 +29,8 @@ const createProduct = async(req,res,next) => {
         product = await Product.create(product);
         let id = product._id;
         let newProduct = await Product.findById(product._id)
-        .populate('category')
-        .populate('brand')
+        .populate('category','name')
+        .populate('brand','name')
         res.status(200).json(newProduct)
     }catch(err) {
         console.log(err);
@@ -58,7 +58,7 @@ const updateProduct = async(req,res,next) => {
         res.status(404).json(err)
     }
 }
-
+// 
 const deleteProduct = async (req, res, next) => {
     let id = req.params.id;
     try {
@@ -78,6 +78,10 @@ const deleteProduct = async (req, res, next) => {
         console.log(err)
         res.status(404).json(err)
     }
+}
+// get Detail
+const getDetail = async(req,res,next) => {
+    
 }
 module.exports = {
     createProduct,
