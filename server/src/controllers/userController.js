@@ -19,17 +19,19 @@ const getStaff = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json(staffs)
 
 })
+// lấy danh sách khách hàng
 const getAll = async (req, res, next) => {
     try {
-        let query = req.query.page;
-        let limit = 3;
-        let offset = 0;
-        if (query) {
-            let page = + query;
-            offset = (page - 1) * limit
+        let users = await User.find().populate('roleId', 'name')
+        let employees = [];
+        for (let user of users) {
+            if (user.roleId) {
+                if (user.roleId.name == "user") {
+                    employees.push(user)
+                }
+            }
         }
-        let users = await User.find().populate('roleId', 'name').limit(limit).skip(offset)
-        res.status(200).json(users)
+        res.status(200).json(employees)
 
     } catch (err) {
         console.log(err);
@@ -48,10 +50,7 @@ const deleteUser = async (req, res, next) => {
         } else {
             await user.deleteOne();
             await Role.updateMany({ _id: user.roleId }, { $pull: { users: user._id } });
-            res.status(204).json({
-                message: 'delete success',
-                user: user
-            });
+            res.status(200).json(user);
         }
     } catch (err) {
         console.log(err);
@@ -61,6 +60,7 @@ const deleteUser = async (req, res, next) => {
 const addStaff = catchAsyncErrors(async (req, res, next) => {
     const errors = validationResult(req);
     let user = req.body;
+    console.log(user);
     if (!errors.isEmpty()) {
         return res.status(422).send({ errMessage: errors.array() });
     } else {

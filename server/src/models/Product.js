@@ -14,6 +14,10 @@ const ProductSchema = new Schema(
         description: {
             type: String,
             required: [true, 'please enter Product description'],
+        },  
+        stock: {
+            type: Number,
+            default: 0          
         },
         images: [
             {
