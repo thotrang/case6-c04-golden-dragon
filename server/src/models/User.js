@@ -53,7 +53,7 @@ const UserSchema = new mongoose.Schema(
         discounts: [{
             type: Schema.Types.ObjectId,
             ref: 'Discount'
-        
+
         }]
 
     },

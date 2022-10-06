@@ -20,5 +20,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.1",
     "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "cloudinary": "^1.32.0",
+    "express-fileupload": "^1.4.0"
   }
 }
