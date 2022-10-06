@@ -67,7 +67,7 @@ const register = async (req, res, next) => {
             res.status(500).json({ success: false, message: 'k luu dc vao data' });
         }
         //Return token
-        res.json({ success: false, message: 'Xoá user thành công', newUser });
+        res.json({ success: true, message: 'Thêm user thành công', newUser });
         next();
     } catch (error) {
         res.status(500).json({ success: false, message: 'Internal server error' });
