@@ -28,12 +28,10 @@ const UserSchema = new mongoose.Schema(
             minLength: [4, "min length 4"],
         },
         gender: {
-            type: String,
-            require: true,
+            type: String
         },
         dob: {
-            type: String,
-            require: true,
+            type: String
         },
         avatar: {
             public_id: {
@@ -53,10 +51,9 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        
     },
     {
         timestamps: true,
-    },
+    }
 );
 module.exports = mongoose.model('User', UserSchema);

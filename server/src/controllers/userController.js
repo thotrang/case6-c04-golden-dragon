@@ -231,6 +231,8 @@ const searchStaff = async (req, res, next) => {
     })
     res.status(200).json(search)
 
+
+
 }
 module.exports = {
     getStaff,

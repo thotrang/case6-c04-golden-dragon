@@ -89,3 +89,41 @@ module.exports = {
     updateProduct,
     deleteProduct
 }
+
+//get Product by categoryId
+//get Product by brandId
+//create review or update
+exports.createProductReview = async (req,res,next)=>{
+    const {rating,comment,productId} = req.body
+    const review ={
+        user:req.user._id,
+        name:req.user.name,
+        rating:Number(rating),
+        comment
+    }
+    const product = await Product.findById(productId)
+    const  isReviewed =  product.reviews.find(rev =>rev.user.toString()===req.user._id)
+
+    if(isReviewed){
+product.reviews.forEach(rev=>{
+    if(rev.user.toString()=== req.user.toString())
+        ( rev.rating =rating),
+       ( rev.comment = comment)
+})
+    }else{
+        product.reviews.push(review)
+        product.rating
+
+    }
+    let avg = 0
+    product.rating = product.reviews.forEach(rev=>{
+        avg +=rev.rating
+    })
+await product.save({
+    validateBeforeSave:false,
+})
+    res.status(200).json({
+        success:true
+    })
+
+}
