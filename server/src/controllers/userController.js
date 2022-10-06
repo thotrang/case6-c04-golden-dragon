@@ -60,7 +60,6 @@ const deleteUser = async (req, res, next) => {
 const addStaff = catchAsyncErrors(async (req, res, next) => {
     const errors = validationResult(req);
     let user = req.body;
-    console.log(user);
     if (!errors.isEmpty()) {
         return res.status(422).send({ errMessage: errors.array() });
     } else {
@@ -77,6 +76,7 @@ const addStaff = catchAsyncErrors(async (req, res, next) => {
                     name: user.roleId
                 }).populate('name')
                 user.roleId = role._id;
+
                 let newUser = await User.create(user);
 
                 await Role.updateMany({ _id: role._id }, { $push: { userId: user._id } });
