@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // get All Product
-const getAllProduct = async (req, res, next) => {
+const getAllProduct = catchAsyncErrors( async (req, res, next) => {
     const { page } = req.params;
     const perPage = 10;
     const skip = (page - 1) * perPage;
@@ -20,7 +20,7 @@ const getAllProduct = async (req, res, next) => {
     } catch (err) {
         console.log(error.message)
     }
-}
+})
 
 // 
 const createProduct = async(req,res,next) => {
