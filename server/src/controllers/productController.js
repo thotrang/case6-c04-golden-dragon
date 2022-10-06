@@ -48,8 +48,9 @@ const updateProduct = async (req, res, next) => {
             let data = req.body;
             newProduct = await Product.findOneAndUpdate({
                 _id: id
-            }, data,{new:true});
-            console.log(newProduct)
+            }, data, { new: true })
+                .populate('categoryId', 'name')
+                .populate('brandId', 'name');
             res.status(200).json(newProduct)
         }
     } catch (err) {

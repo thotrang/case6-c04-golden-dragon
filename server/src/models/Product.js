@@ -12,6 +12,10 @@ const ProductSchema = new mongoose.Schema(
             type: String,
             required: [true, 'please enter Product description'],
         },
+        price:{
+            type: Number,
+            default: 0
+        },
         stock: {
             type: Number,
             default: 0
