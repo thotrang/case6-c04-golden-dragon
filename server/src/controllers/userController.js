@@ -64,38 +64,77 @@ const addStaff = catchAsyncErrors(async (req, res, next) => {
         return res.status(422).send({ errMessage: errors.array() });
     } else {
         let checkName = await User.findOne({
-            userName: user.userName
-        })
+            userName: user.userName,
+        });
         if (!checkName) {
             let checkEmail = await User.findOne({
-                email: user.email
-            })
+                email: user.email,
+            });
             if (!checkEmail) {
                 user.password = await bcrypt.hash(user.password, 10);
                 let role = await Role.findOne({
-                    name: user.roleId
-                }).populate('name')
-                user.roleId = role._id;
-
-                let newUser = await User.create(user);
-
-                await Role.updateMany({ _id: role._id }, { $push: { userId: user._id } });
-                res.status(200).json(newUser)
+                    name: user.role,
+                });
+                if (role) {
+                    user.roleId = role._id;
+                    let newUser = await User.create(user);
+                    await Role.updateMany({ _id: role._id }, { $push: { userId: user._id } });
+                    newUser = await User.find({
+                        _id: newUser._id,
+                    }).populate('roleId');
+                    res.status(200).json(newUser);
+                }
             } else {
                 res.status(500).json({
-                    message: 'email was existed'
-                })
+                    message: 'email was existed',
+                });
             }
-
         } else {
             res.status(500).json({
-                message: 'userName was existed'
-            })
+                message: 'userName was existed',
+            });
         }
-
     }
+});
+// const addStaff = catchAsyncErrors(async (req, res, next) => {
+//     const errors = validationResult(req);
+//     let user = req.body;
+//     if (!errors.isEmpty()) {
+//         return res.status(422).send({ errMessage: errors.array() });
+//     } else {
+//         let checkName = await User.findOne({
+//             userName: user.userName
+//         })
+//         if (!checkName) {
+//             let checkEmail = await User.findOne({
+//                 email: user.email
+//             })
+//             if (!checkEmail) {
+//                 user.password = await bcrypt.hash(user.password, 10);
+//                 let role = await Role.findOne({
+//                     name: user.roleId
+//                 }).populate('name')
+//                 user.roleId = role._id;
 
-})
+//                 let newUser = await User.create(user);
+
+//                 await Role.updateMany({ _id: role._id }, { $push: { userId: user._id } });
+//                 res.status(200).json(newUser)
+//             } else {
+//                 res.status(500).json({
+//                     message: 'email was existed'
+//                 })
+//             }
+
+//         } else {
+//             res.status(500).json({
+//                 message: 'userName was existed'
+//             })
+//         }
+
+//     }
+
+// })
 // 
 const updateUser = async (req, res, next) => {
     try {
