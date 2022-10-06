@@ -2,13 +2,11 @@ const mongoose = require('mongoose') ;
 const {Schema} = require('mongoose');
 
 const DiscountSchema = new Schema({
-    name : {
-        required : true,
-        type : String
+    number: {
+        type:Number
     },
-    productId :{
-        type : Schema.Types.ObjectId,
-        ref : "Product"
+    name: {
+        type: String
     }
 })
 

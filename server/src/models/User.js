@@ -28,10 +28,12 @@ const UserSchema = new mongoose.Schema(
             minLength: [4, "min length 4"],
         },
         gender: {
-            type: String
+            type: String,
+            require: true,
         },
         dob: {
-            type: String
+            type: String,
+            require: true,
         },
         avatar: {
             public_id: {
@@ -51,9 +53,15 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        discounts: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Discount'
+
+        }]
+
     },
     {
         timestamps: true,
-    }
+    },
 );
 module.exports = mongoose.model('User', UserSchema);
