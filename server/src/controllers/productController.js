@@ -81,13 +81,29 @@ const deleteProduct = async (req, res, next) => {
 }
 // get Detail
 const getDetail = async (req, res, next) => {
-
+    let id = req.params.id;
+    try {
+        let product = await Product.findById(id)
+            .populate('categoryId', 'name')
+            .populate('brandId', 'name');
+        if (!product) {
+            res.status(404).json({
+                message: "not found"
+            })
+        } else {
+            res.status(200).json(product)
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(404).json(err)
+    }
 }
 module.exports = {
     createProduct,
     getAllProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getDetail
 }
 
 //get Product by categoryId
