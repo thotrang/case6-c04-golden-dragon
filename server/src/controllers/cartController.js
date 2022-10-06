@@ -41,16 +41,15 @@ const pustItem = async (req, res, next) => {
         res.status(400).json(err);
     }
 }
-const resetCart = async (req, res, next) => {
-    try {
+// const resetCart = async (req, res, next) => {
+//     try {
 
-    } catch (err) {
-        res.status(400).json(err);
-    }
-}
+//     } catch (err) {
+//         res.status(400).json(err);
+//     }
+// }
 module.exports = {
     createCart,
     getAllBill,
-    resetCart,
     pustItem
 }
