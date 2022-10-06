@@ -4,15 +4,15 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors")
 
 
 //create Product admin
-exports.createProduct =   async (req,res,next) =>{
+exports.createProduct = catchAsyncErrors(  async (req,res,next) =>{
     const product = await Product.create(req.body)
      res.status(201).json({
         success:true,
         product
     })
-}
+})
 //getAll
-exports.getAllProducts = async (req,res) =>{
+exports.getAllProducts = catchAsyncErrors( async (req,res) =>{
     const resultPerPage = 10;
     const  apiFeature = new ApiFeatures(Product.find(),req.query)
         .search()
@@ -26,7 +26,7 @@ exports.getAllProducts = async (req,res) =>{
     res.status(200).json(
             products
     )
-}
+})
 //update-admin
 exports.updateProduct =  catchAsyncErrors(async (req,res,next)=>{
     let product = Product.findById(req.params.id)
@@ -47,7 +47,7 @@ exports.updateProduct =  catchAsyncErrors(async (req,res,next)=>{
     })
 });
 // delete
-exports.deleteProduct = async (req,res,next)=>{
+exports.deleteProduct = catchAsyncErrors(  async (req,res,next)=>{
     const product = await Product.findById(req.params.id)
     if(!product){
         return res.status(500).json({
@@ -60,9 +60,9 @@ exports.deleteProduct = async (req,res,next)=>{
         success:true,
         message:"delete success"
     })
-}
+})
 //get product details
-exports.getProductDetails = async (req,res,next)=>{
+exports.getProductDetails = catchAsyncErrors( async (req,res,next)=>{
     const product = await  Product.findById(req.params.id)
     if(!product){ const product = await Product.findById(req.params.id)
         if(!product){
@@ -79,4 +79,4 @@ exports.getProductDetails = async (req,res,next)=>{
         })
 
     }
-}
+})
