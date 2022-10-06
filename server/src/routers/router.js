@@ -6,12 +6,13 @@ const roleRouter = require('./roleRouter');
 const authRouter = require('./authRouter');
 const productRouter = require('./productRouter');
 const brandRouter = require('./brandRouter');
-
+const categoryRouter = require('./categoryRouter')
 router.use('/admin', productRouter);
 
 router.use('', authRouter);
 router.use('/user', userRouter);
 router.use('/role', roleRouter);
 router.use('/brand', brandRouter);
+router.use('/category', categoryRouter)
 
 module.exports = router;

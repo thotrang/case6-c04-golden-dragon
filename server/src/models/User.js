@@ -54,7 +54,12 @@ const UserSchema = new mongoose.Schema(
             type: Schema.Types.ObjectId,
             ref: 'Discount'
 
-        }]
+        }],
+        cartId:{
+            type: Schema.Types.ObjectId,
+            ref:'Cart',
+            required: true
+        }
 
     },
     {
