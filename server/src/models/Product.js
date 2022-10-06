@@ -28,6 +28,7 @@ const ProductSchema = new mongoose.Schema(
                 },
             },
         ],
+        
         comment: {
             type: String,
         },

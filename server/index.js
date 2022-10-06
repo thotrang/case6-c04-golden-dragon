@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cloudinary = require('cloudinary')
+// const cloudinary = require('cloudinary')
 const dotenv = require('dotenv').config();
 const router = require('./src/routers/router')
 const fileupload = require('express-fileupload')
@@ -12,6 +12,7 @@ const PORT = process.env.PORT
 const URL = process.env.MONGO0DB_URL
 
 app.use(cors());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extends:true}));
 app.use(fileupload())
 
@@ -26,11 +27,11 @@ const connectDatabase = () => {
 connectDatabase();
 
 //cloudinary config
-cloudinary.config({
-    cloud_name:process.env.CLOUDINARY_NAME,
-    api_key:Process.env.API_KEY,
-api_secret:process.env.API_SERCET
-})
+// cloudinary.config({
+//     cloud_name:process.env.CLOUDINARY_NAME,
+//     api_key:Process.env.API_KEY,
+// api_secret:process.env.API_SERCET
+// })
 
 
 

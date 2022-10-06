@@ -15,7 +15,7 @@ router.put('/updateRoleUser/:id',userController.updateRoleUser)
 router.put('/update/:id',userController.updateUser)
 router.get('/searchStaff/:q',userController.searchStaff)
 router.get('/searchUser/:q',userController.searchUser)
-router.put('/review',productController.createProductReview)
+// router.put('/review',productController.createProductReview)
 
 
 module.exports = router
