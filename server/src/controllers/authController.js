@@ -1,13 +1,11 @@
 // Thực hiện những công việc xác thực người dùng login logout register
 
-const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 const Role = require('../models/Role');
-
+const cartController = require('./cartController')
 // @route POST /register
 // @description Register user (mô tả)
 // access Public (trạng thái)
@@ -47,6 +45,8 @@ const register = async (req, res, next) => {
         //all good
         const roleUser = await Role.findOne({ name: 'user' }).populate('userId');
         const hashedPassword = await bcrypt.hash(password, 10);
+        const cart = await cartController.createCart()
+
         const newUser = new User({
             userName,
             password: hashedPassword,
@@ -59,8 +59,8 @@ const register = async (req, res, next) => {
                 public_id: 'a',
                 url: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/11/20/975861/5-Giong-Cho-Long-Xu-.jpg',
             },
+            cartId: cart._id
         });
-        // console.log(newUser);
         try {
             await newUser.save();
         } catch (error) {

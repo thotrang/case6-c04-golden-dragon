@@ -8,14 +8,21 @@ const CartSchema = new Schema({
             ref: 'Item'
         }
     ],
-    total: Number,
+    total: {
+        type:Number,
+        default: 0 
+    },
     discount: {
         type: Schema.Types.ObjectId,
         ref: 'Discount'
     },
     bill: [{
-        type: String
+        type:String
     }],
+    userId:{
+        type: Schema.Types.ObjectId,
+        ref:'User'
+    }
 })
 
 module.exports = mongoose.model("Cart", CartSchema);
