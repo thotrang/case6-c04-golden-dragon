@@ -4,23 +4,23 @@ const Schema = mongoose.Schema;
 const BrandSchema = new Schema({
     name: {
         type: String,
-        required: true
+        require: true
     },
     image: {
 
             public_id : {
                 type : String,
-                required:true
+                require:true
             },
             url : {
                 type : String,
-                required : true
+                require: true
             }
     },
 
     description : {
         type : String,
-        required : true
+        require : true
     }
 
 
