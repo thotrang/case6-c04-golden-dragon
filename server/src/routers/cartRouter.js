@@ -5,4 +5,5 @@ router.get('/',cartController.getAllBill)
 router.post('/',cartController.createCart)
 router.put('/:id',cartController.pustItem)
 router.get('/:id',cartController.getItemIntoCart)
+router.delete('/:id/:id_item',cartController.deleteItem)
 module.exports = router;

@@ -74,6 +74,29 @@ const pustItem = async (req, res, next) => {
         res.status(400).json(err);
     }
 }
+const deleteItem = async (req, res, next) => {
+    let id = req.params.id;
+    let idItem = req.params.id_item
+    try {
+        let cart = await Cart.findById(id);
+        if(!cart){
+            res.status(404).json({
+                message:'not found!'
+            });
+        }else{
+            await Cart.findByIdAndUpdate({
+                _id:id
+            },{
+                $pull:{itemId: idItem}
+            })
+            await itemController.deleteItem(req,res,next)
+            cart = await Cart.findById(id).populate({path:"itemId",populate:{path:'productId'}})
+            res.status(200).json(cart)
+        }
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}
 // const resetCart = async (req, res, next) => {
 //     try {
 
@@ -85,5 +108,6 @@ module.exports = {
     createCart,
     getAllBill,
     pustItem,
-    getItemIntoCart
+    getItemIntoCart,
+    deleteItem
 }
