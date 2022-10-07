@@ -35,6 +35,23 @@ const getAllBill = async (req, res, next) => {
         res.status(400).json(err);
     }
 }
+const getItemIntoCart =  async (req, res, next) => {
+    try {
+    let id = req.params.id;
+    let cart = await Cart.findById(id).populate({path:"itemId",populate:{path:'productId'}});
+    if(!cart){
+        res.status(404).json({
+            message:'not found!'
+        });
+    }else{
+        let items = cart.itemId
+        res.status(200).json(items)
+    }
+    } catch (err) {
+        console.log(err);
+        res.status(400).json(err);
+    }
+}
 const pustItem = async (req, res, next) => {
     let id = req.params.id;
     try {
@@ -50,7 +67,7 @@ const pustItem = async (req, res, next) => {
             },{
                 $push:{itemId: item._id}
             })
-            cart = await Cart.findById(id).populate('itemId')
+            cart = await Cart.findById(id).populate({path:"itemId",populate:{path:'productId'}})
             res.status(200).json(cart)
         }
     } catch (err) {
@@ -67,5 +84,6 @@ const pustItem = async (req, res, next) => {
 module.exports = {
     createCart,
     getAllBill,
-    pustItem
+    pustItem,
+    getItemIntoCart
 }
