@@ -1,5 +1,6 @@
 const Cart = require('../models/Cart')
-
+const Item = require('../models/Item')
+const itemController = require('./itemController')
 const createCart = async (req,res,next) => {
 
     try {
@@ -35,8 +36,16 @@ const getAllBill = async (req, res, next) => {
     }
 }
 const pustItem = async (req, res, next) => {
+    let id = req.params.id;
     try {
-
+        let cart = await Cart.findById(id);
+        if(!cart){
+            res.status(404).json({
+                message:'not found!'
+            });
+        }else{
+            const item = await itemController.createItem()
+        }
     } catch (err) {
         res.status(400).json(err);
     }
