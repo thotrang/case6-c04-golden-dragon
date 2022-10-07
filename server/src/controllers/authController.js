@@ -5,7 +5,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 const Role = require('../models/Role');
-const cartController = require('./cartController')
+const cartController = require('./cartController');
 // @route POST /register
 // @description Register user (mô tả)
 // access Public (trạng thái)
@@ -45,7 +45,7 @@ const register = async (req, res, next) => {
         //all good
         const roleUser = await Role.findOne({ name: 'user' }).populate('userId');
         const hashedPassword = await bcrypt.hash(password, 10);
-        const cart = await cartController.createCart()
+        const cart = await cartController.createCart();
 
         const newUser = new User({
             userName,
@@ -59,7 +59,7 @@ const register = async (req, res, next) => {
                 public_id: 'a',
                 url: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/11/20/975861/5-Giong-Cho-Long-Xu-.jpg',
             },
-            cartId: cart._id
+            cartId: cart._id,
         });
         try {
             await newUser.save();
@@ -68,7 +68,7 @@ const register = async (req, res, next) => {
         }
         //Return token
         res.json({ success: true, message: 'Đăng kí thành công', newUser });
-        next()
+        next();
     } catch (error) {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
@@ -87,7 +87,7 @@ const login = async (req, res, next) => {
     }
     try {
         // Check for existing user( xem người dùng có tồn tại hay Không)
-        const user = await User.findOne({ userName }).populate('roleId', 'name')
+        const user = await User.findOne({ userName }).populate('roleId', 'name');
         if (!user) {
             return res.status(400).json({ success: false, message: 'Tài khoản hoặc mật khẩu Không đúng' });
         }
@@ -101,17 +101,17 @@ const login = async (req, res, next) => {
             // Return token
             const accessToken = jwt.sign(
                 {
-                    user:user
+                    user: user,
                 },
                 process.env.SECRET_KEY,
-                { expiresIn: 36000 }
+                { expiresIn: 36000 },
             );
             res.status(200).json({
                 success: true,
                 message: 'Người dùng đăng nhập thành công',
-                accessToken
+                accessToken,
             });
-            next()
+            next();
         }
     } catch (error) {
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -119,5 +119,5 @@ const login = async (req, res, next) => {
 };
 module.exports = {
     login,
-    register
+    register,
 };

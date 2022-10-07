@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema(
         name: {
             type: String,
             required: [true, 'please enter name description'],
-            minLength: [4, "min length 4"]
+            minLength: [4, 'min length 4'],
         },
         roleId: {
             type: Schema.Types.ObjectId,
@@ -25,13 +25,13 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
             maxLength: [10, 'max length 10'],
-            minLength: [4, "min length 4"],
+            minLength: [4, 'min length 4'],
         },
         gender: {
-            type: String
+            type: String,
         },
         dob: {
-            type: String
+            type: String,
         },
         avatar: {
             public_id: {
@@ -44,23 +44,23 @@ const UserSchema = new mongoose.Schema(
             },
         },
         address: {
-            type: String
+            type: String,
         },
         password: {
             type: String,
             required: true,
         },
-        discounts: [{
+        discounts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Discount',
+            },
+        ],
+        cartId: {
             type: Schema.Types.ObjectId,
-            ref: 'Discount'
-
-        }],
-        cartId:{
-            type: Schema.Types.ObjectId,
-            ref:'Cart',
-            required: true
-        }
-
+            ref: 'Cart',
+            // required: true
+        },
     },
     {
         timestamps: true,
