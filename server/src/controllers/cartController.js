@@ -44,7 +44,14 @@ const pustItem = async (req, res, next) => {
                 message:'not found!'
             });
         }else{
-            const item = await itemController.createItem()
+            const item = await itemController.createItem(req,res)
+            await Cart.findByIdAndUpdate({
+                _id:id
+            },{
+                $push:{itemId: item._id}
+            })
+            cart = await Cart.findById(id).populate('itemId')
+            res.status(200).json(cart)
         }
     } catch (err) {
         res.status(400).json(err);

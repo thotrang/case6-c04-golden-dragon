@@ -87,7 +87,7 @@ const login = async (req, res, next) => {
     }
     try {
         // Check for existing user( xem người dùng có tồn tại hay Không)
-        const user = await User.findOne({ userName }).populate('roleId', 'name')
+        const user = await User.findOne({ userName }).populate('roleId', 'name').populate('cartId')
         if (!user) {
             return res.status(400).json({ success: false, message: 'Tài khoản hoặc mật khẩu Không đúng' });
         }
@@ -99,6 +99,7 @@ const login = async (req, res, next) => {
         } else {
             // All good
             // Return token
+          
             const accessToken = jwt.sign(
                 {
                     user:user
