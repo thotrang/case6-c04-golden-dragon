@@ -97,12 +97,12 @@ const deleteItem = async (req, res, next) => {
                 message: 'not found!'
             });
         } else {
-            const item = itemController.getItem(req,res,next)
+            const item = await itemController.getItem(req,res,next)
             await Cart.findByIdAndUpdate({
                 _id: id
             }, {
                 $pull: { itemId: idItem },
-                $set: { totals: cart - item.total}
+                $set: { totals: cart.totals - item.total}
             })
             await itemController.deleteItem(req, res, next)
             cart = await Cart.findById(id).populate({ path: "itemId", populate: { path: 'productId' } })
