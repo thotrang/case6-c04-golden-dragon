@@ -53,6 +53,25 @@ const updateItem = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
+const deleteAllInCart = async (req,res,next) => {
+    let arr = req.itemArr;
+    try {
+       for(let itemId of arr){
+        let item = await Item.findById(itemId);
+        if (!item) {
+            res.status(404).json({
+                message: "not found"
+            })
+        } else {
+            console.log('delete item success');
+            await item.deleteOne();
+        }
+       }
+      
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}   
 module.exports = {
-    updateItem,deleteItem,createItem
+    updateItem,deleteItem,createItem,deleteAllInCart
 };

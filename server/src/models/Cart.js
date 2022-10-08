@@ -8,7 +8,7 @@ const CartSchema = new Schema({
             ref: 'Item'
         }
     ],
-    total: {
+    totals: {
         type:Number,
         default: 0 
     },
@@ -22,6 +22,10 @@ const CartSchema = new Schema({
     userId:{
         type: Schema.Types.ObjectId,
         ref:'User'
+    },
+    status:{
+        type: Boolean,
+        default:null
     }
 })
 

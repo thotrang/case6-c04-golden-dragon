@@ -110,7 +110,8 @@ const login = async (req, res, next) => {
             res.status(200).json({
                 success: true,
                 message: 'Người dùng đăng nhập thành công',
-                accessToken
+                accessToken,
+                user
             });
             next()
         }
