@@ -19,7 +19,7 @@ const createCart = async (req, res, next) => {
 // const getCart = async (req, res, next) => {
 
 //     try {
-       
+
 //     } catch (err) {
 //         console.log(err);
 //         res.status(400).json(err);
@@ -44,7 +44,7 @@ const getAllBill = async (req, res, next) => {
         res.status(400).json(err);
     }
 }
-const getItemIntoCart = async (req, res, next) => {
+const getDetailCart = async (req, res, next) => {
     try {
         let id = req.params.id;
         let cart = await Cart.findById(id).populate({ path: "itemId", populate: { path: 'productId' } });
@@ -53,14 +53,14 @@ const getItemIntoCart = async (req, res, next) => {
                 message: 'not found!'
             });
         } else {
-            let items = cart.itemId
-            res.status(200).json(items)
+            res.status(200).json(cart)
         }
     } catch (err) {
         console.log(err);
         res.status(400).json(err);
     }
 }
+
 const pustItem = async (req, res, next) => {
     let id = req.params.id;
     try {
@@ -71,10 +71,13 @@ const pustItem = async (req, res, next) => {
             });
         } else {
             const item = await itemController.createItem(req, res)
+            item.populate('productId')
             await Cart.findByIdAndUpdate({
                 _id: id
             }, {
-                $push: { itemId: item._id }
+                $push: { itemId: item._id },
+                $set: { totals: cart.totals + item.total }
+
             })
             cart = await Cart.findById(id).populate({ path: "itemId", populate: { path: 'productId' } })
             res.status(200).json(cart)
@@ -83,6 +86,7 @@ const pustItem = async (req, res, next) => {
         res.status(400).json(err);
     }
 }
+
 const deleteItem = async (req, res, next) => {
     let id = req.params.id;
     let idItem = req.params.id_item
@@ -93,13 +97,34 @@ const deleteItem = async (req, res, next) => {
                 message: 'not found!'
             });
         } else {
+            const item = itemController.getItem(req,res,next)
             await Cart.findByIdAndUpdate({
                 _id: id
             }, {
-                $pull: { itemId: idItem }
+                $pull: { itemId: idItem },
+                $set: { totals: cart - item.total}
             })
             await itemController.deleteItem(req, res, next)
             cart = await Cart.findById(id).populate({ path: "itemId", populate: { path: 'productId' } })
+            res.status(200).json(cart)
+        }
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}
+const updateAmountItem = async (req, res, next) => {
+    let id = req.params.id;
+    let id_item = req.params.id_item
+    try {
+        let cart = await Cart.findById(id);
+        if (!cart) {
+            res.status(404).json({
+                message: 'not found!'
+            });
+        } else {
+            req.idItem = id_item
+            await itemController.updateItem(req, res, next)
+            cart = await Cart.findById(id).populate('itemId')
             res.status(200).json(cart)
         }
     } catch (err) {
@@ -118,14 +143,15 @@ const resetCart = async (req, res, next) => {
             await Cart.findByIdAndUpdate({
                 _id: id
             }, {
-                $set:{
+                $set: {
                     itemId: [],
                     discount: null,
-                    bill: []
+                    bill: [],
+                    totals: 0 
                 }
             })
             req.itemArr = cart.itemId
-            await itemController.deleteAllInCart(req,res,next)
+            await itemController.deleteAllInCart(req, res, next)
             cart = await Cart.findById(id)
             res.status(200).json(cart)
         }
@@ -139,7 +165,8 @@ module.exports = {
     createCart,
     getAllBill,
     pustItem,
-    getItemIntoCart,
     deleteItem,
-    resetCart
+    resetCart,
+    getDetailCart,
+    updateAmountItem
 }

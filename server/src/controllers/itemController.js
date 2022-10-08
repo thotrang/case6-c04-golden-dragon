@@ -10,7 +10,21 @@ const createItem = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
-
+const getItem = async (req, res, next) => {
+    try {
+        const id = req.params.id_item;
+        let item = await Item.findById(id);
+        if (!item) {
+            res.status(404).json({
+                message: "not found"
+            })
+        } else {
+            return item
+        }
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}
 const deleteItem = async (req, res, next) => {
     try {
         const id = req.params.id_item;
@@ -28,14 +42,14 @@ const deleteItem = async (req, res, next) => {
 }
 const updateItem = async (req, res, next) => {
     try {
-        const id = req.params.id;
+        const id = req.idItem;
         let item = await Item.findById(id);
         if (!item) {
             res.status(404).json({
                 message: "not found"
             })
         } else {
-            let data = req.body;
+            const data = req.body.amount
             await Item.findOneAndUpdate({
                 _id: id
             }, {
@@ -43,11 +57,6 @@ const updateItem = async (req, res, next) => {
                     amount: data
                 }
             })
-            item = await Item.findById(id).populate('roleId', 'name');
-            res.status(200).json({
-                item: item,
-                message: "update success"
-            });
         }
     } catch (err) {
         res.status(400).json(err)
@@ -73,5 +82,5 @@ const deleteAllInCart = async (req,res,next) => {
     }
 }   
 module.exports = {
-    updateItem,deleteItem,createItem,deleteAllInCart
+    updateItem,deleteItem,createItem,deleteAllInCart,getItem
 };

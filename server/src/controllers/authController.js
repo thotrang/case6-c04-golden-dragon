@@ -87,7 +87,7 @@ const login = async (req, res, next) => {
     }
     try {
         // Check for existing user( xem người dùng có tồn tại hay Không)
-        const user = await User.findOne({ userName }).populate('roleId', 'name').populate('cartId')
+        const user = await User.findOne({ userName }).populate('roleId', 'name')
         if (!user) {
             return res.status(400).json({ success: false, message: 'Tài khoản hoặc mật khẩu Không đúng' });
         }
@@ -110,8 +110,7 @@ const login = async (req, res, next) => {
             res.status(200).json({
                 success: true,
                 message: 'Người dùng đăng nhập thành công',
-                accessToken,
-                user
+                accessToken
             });
             next()
         }
