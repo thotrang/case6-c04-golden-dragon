@@ -22,10 +22,6 @@ const CartSchema = new Schema({
     userId:{
         type: Schema.Types.ObjectId,
         ref:'User'
-    },
-    status:{
-        type: Boolean,
-        default:null
     }
 })
 

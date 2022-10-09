@@ -71,16 +71,23 @@ const pustItem = async (req, res, next) => {
             });
         } else {
             const item = await itemController.createItem(req, res)
-            item.populate('productId')
-            await Cart.findByIdAndUpdate({
-                _id: id
-            }, {
-                $push: { itemId: item._id },
-                $set: { totals: cart.totals + item.total }
+            if (item) {
+                item.populate('productId')
+                await Cart.findByIdAndUpdate({
+                    _id: id
+                }, {
+                    $push: { itemId: item._id },
+                    $set: { totals: cart.totals + item.total }
+                })
+                cart = await Cart.findById(id).populate({ path: "itemId", populate: { path: 'productId' } })
+                res.status(200).json(cart)
+            } else {
+                res.status(404).json({
+                    status: false,
+                    message: "product not found !"
+                })
+            }
 
-            })
-            cart = await Cart.findById(id).populate({ path: "itemId", populate: { path: 'productId' } })
-            res.status(200).json(cart)
         }
     } catch (err) {
         res.status(400).json(err);
@@ -97,12 +104,12 @@ const deleteItem = async (req, res, next) => {
                 message: 'not found!'
             });
         } else {
-            const item = await itemController.getItem(req,res,next)
+            const item = await itemController.getItem(req, res, next)
             await Cart.findByIdAndUpdate({
                 _id: id
             }, {
                 $pull: { itemId: idItem },
-                $set: { totals: cart.totals - item.total}
+                $set: { totals: cart.totals - item.total }
             })
             await itemController.deleteItem(req, res, next)
             cart = await Cart.findById(id).populate({ path: "itemId", populate: { path: 'productId' } })
@@ -123,8 +130,24 @@ const updateAmountItem = async (req, res, next) => {
             });
         } else {
             req.idItem = id_item
-            await itemController.updateItem(req, res, next)
-            cart = await Cart.findById(id).populate('itemId')
+            let newItem = await itemController.updateItem(req, res, next)
+            if(newItem == false){
+                res.status(404).json({
+                    status:false
+                })
+            }
+            let totals = 0;
+            cart = await Cart.findById(id).populate("itemId")
+
+            for(let item of cart.itemId){
+                 totals += item.total
+            }
+            await Cart.findByIdAndUpdate({
+                _id: id
+            }, {
+                $set: { totals: totals}
+            })
+            cart = await Cart.findById(id).populate({ path: "itemId", populate: { path: 'productId' } })
             res.status(200).json(cart)
         }
     } catch (err) {
@@ -147,7 +170,7 @@ const resetCart = async (req, res, next) => {
                     itemId: [],
                     discount: null,
                     bill: [],
-                    totals: 0 
+                    totals: 0
                 }
             })
             req.itemArr = cart.itemId
