@@ -13,7 +13,7 @@ const createCart = async (req, res, next) => {
         return cart
     } catch (err) {
         console.log(err);
-        res.status(400).json(err);
+        return false
     }
 };
 // const getCart = async (req, res, next) => {
@@ -132,7 +132,7 @@ const updateAmountItem = async (req, res, next) => {
             req.idItem = id_item
             let newItem = await itemController.updateItem(req, res, next)
             if(newItem == false){
-                res.status(404).json({
+                return res.status(404).json({
                     status:false
                 })
             }
@@ -148,10 +148,12 @@ const updateAmountItem = async (req, res, next) => {
                 $set: { totals: totals}
             })
             cart = await Cart.findById(id).populate({ path: "itemId", populate: { path: 'productId' } })
-            res.status(200).json(cart)
+            
+            // console.log(res.headers)
+            return res.status(200).json(cart)
         }
     } catch (err) {
-        res.status(400).json(err);
+         return res.status(400).json(err);
     }
 }
 const resetCart = async (req, res, next) => {

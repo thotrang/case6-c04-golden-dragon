@@ -15,7 +15,7 @@ const createItem = async (req, res, next) => {
         }
 
     } catch (err) {
-        res.status(400).json(err)
+        return false
     }
 }
 const getItem = async (req, res, next) => {
@@ -23,15 +23,12 @@ const getItem = async (req, res, next) => {
         const id = req.params.id_item;
         let item = await Item.findById(id);
         if (!item) {
-            res.status(404).json({
-                status: false,
-                message: "item not found"
-            })
+            return false
         } else {
             return item
         }
     } catch (err) {
-        res.status(400).json(err)
+        return false
     }
 }
 const deleteItem = async (req, res, next) => {
@@ -39,14 +36,12 @@ const deleteItem = async (req, res, next) => {
         const id = req.params.id_item;
         let item = await Item.findById(id);
         if (!item) {
-            res.status(404).json({
-                message: "not found"
-            })
+          return false
         } else {
-            await item.deleteOne();
+            return await item.deleteOne();
         }
     } catch (err) {
-        res.status(400).json(err)
+        return false
     }
 }
 const updateItem = async (req, res, next) => {
@@ -54,15 +49,13 @@ const updateItem = async (req, res, next) => {
         const id = req.idItem;
         let item = await Item.findById(id);
         if (!item) {
-            res.status(404).json({
-                message: "not found"
-            })
+            return false
         } else {
             let product = await Product.findById(item.productId)
             if (!product) {
                 return false
             } else {
-                const data = req.body.data
+                const data = req.body.data1
                 await Item.findOneAndUpdate({
                     _id: id
                 }, {
@@ -78,7 +71,7 @@ const updateItem = async (req, res, next) => {
 
         }
     } catch (err) {
-        res.status(400).json(err)
+        return false
     }
 }
 const deleteAllInCart = async (req, res, next) => {
@@ -87,9 +80,7 @@ const deleteAllInCart = async (req, res, next) => {
         for (let itemId of arr) {
             let item = await Item.findById(itemId);
             if (!item) {
-                res.status(404).json({
-                    message: "not found"
-                })
+               return false
             } else {
                 console.log('delete item success');
                 await item.deleteOne();
@@ -97,7 +88,7 @@ const deleteAllInCart = async (req, res, next) => {
         }
 
     } catch (err) {
-        res.status(400).json(err)
+        return false
     }
 }
 module.exports = {
