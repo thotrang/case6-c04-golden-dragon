@@ -43,7 +43,9 @@ const updateProduct = async (req, res, next) => {
         let product = await Product.findById(id);
         let newProduct = {}
         if (!product) {
-            res.status(404).json();
+            res.status(404).json({
+                message:'not found!'
+            });
         } else {
             let data = req.body;
             newProduct = await Product.findOneAndUpdate({

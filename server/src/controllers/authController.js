@@ -99,6 +99,7 @@ const login = async (req, res, next) => {
         } else {
             // All good
             // Return token
+          
             const accessToken = jwt.sign(
                 {
                     user: user,

@@ -78,7 +78,7 @@ const addStaff = catchAsyncErrors(async (req, res, next) => {
                 if (role) {
                     user.roleId = role._id;
                     let newUser = await User.create(user);
-                    await Role.updateMany({ _id: role._id }, { $push: { userId: user._id } });
+                    // await Role.updateMany({ _id: role._id }, { $push: { userId: user._id } });
                     newUser = await User.find({
                         _id: newUser._id,
                     }).populate('roleId');

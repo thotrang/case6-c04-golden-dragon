@@ -59,7 +59,7 @@ const UserSchema = new mongoose.Schema(
         cartId: {
             type: Schema.Types.ObjectId,
             ref: 'Cart',
-            // required: true
+            required: true,
         },
     },
     {
