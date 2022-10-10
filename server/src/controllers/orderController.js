@@ -16,6 +16,16 @@ const getAllOrder = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
+const myOrder = async (req, res, next) => {
+    const idUser = req.params.idUser;
+    try {
+        const orders = Order.find({ userId: idUser }).populate('userId', 'name')
+        res.status(200).json(orders)
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}
+
 const getDetailOrder = async (req, res, next) => {
     try {
         let id = req.params.id;
@@ -52,12 +62,12 @@ const setstatus = async (req, res, next) => {
                 success: false,
                 message: "order not exist"
             })
-        }else{
+        } else {
             let data = req.body;
             await Order.findByIdAndUpdate({
-                _id:id
-            },{
-                $set:{
+                _id: id
+            }, {
+                $set: {
                     status: data
                 }
             })
@@ -87,5 +97,6 @@ module.exports = {
     deleteOrder,
     setstatus,
     cancelOrder,
-    sendOrder
+    sendOrder,
+    myOrder
 }
