@@ -34,15 +34,9 @@ const UserSchema = new mongoose.Schema(
             type: String,
         },
         avatar: {
-            public_id: {
-                type: String,
-                required: true,
-            },
-            url: {
-                type: String,
-                required: true,
-            },
+            type:String
         },
+
         address: {
             type: String,
         },
@@ -50,17 +44,16 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        discounts: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Discount',
-            },
-        ],
-        cartId: {
+        discounts: [{
             type: Schema.Types.ObjectId,
-            ref: 'Cart',
-            required: true,
-        },
+            ref: 'Discount'
+
+        }],
+        cartId:{
+            type: Schema.Types.ObjectId,
+            ref:'Cart'
+        }
+
     },
     {
         timestamps: true,

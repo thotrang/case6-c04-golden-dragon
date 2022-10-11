@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const http = require("http");
 const cors = require("cors");
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -7,7 +8,9 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config();
 const router = require('./src/routers/router')
 const fileupload = require('express-fileupload')
-const Process = require("process");
+// const Process = require("process");
+const server = http.createServer(app);
+const socketRoom = require('./src/socket/room')
 const PORT = process.env.PORT
 const URL = process.env.MONGO0DB_URL
 
@@ -33,15 +36,16 @@ connectDatabase();
 // api_secret:process.env.API_SERCET
 // })
 
-// const socketIO = require('socket.io')(http, {
-//     cors: {
-//         origin: "http://localhost:3000"
-//     }
-// })
+const socketIO = require('socket.io')(http, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST","PUT","DELETE"]
+    }
+})
 
-
+socketRoom.room(socketIO)
 
 app.use('', router)
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`)
 })
