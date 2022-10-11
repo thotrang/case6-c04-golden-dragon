@@ -2,8 +2,9 @@ const Product = require('../models/Product')
 const Category = require('../models/Category')
 const Brand = require('../models/Brand')
 const catchAsyncErrors = require('../middleware/catchAsyncErrors')
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const reviewController = require('./reviewController')
+// const mongoose = require('mongoose');
+// const Schema = mongoose.Schema;
 
 // get All Product
 const getAllProduct = catchAsyncErrors(async (req, res, next) => {
@@ -44,7 +45,7 @@ const updateProduct = async (req, res, next) => {
         let newProduct = {}
         if (!product) {
             res.status(404).json({
-                message:'not found!'
+                message: 'not found!'
             });
         } else {
             let data = req.body;
@@ -58,6 +59,95 @@ const updateProduct = async (req, res, next) => {
     } catch (err) {
         console.log(err);
         res.status(404).json(err)
+    }
+}
+const addReview = async (req, res, next) => {
+    try {
+        let idProduct = req.params.idProduct;
+        let product = await Product.findById(idProduct)
+        if (!product) {
+            return res.status(404).json({
+                message: 'product not found '
+            })
+        } else {
+            const review = await reviewController.addReview(req, res, next)
+            await Product.findOneAndUpdate({
+                _id: idProduct
+            }, {
+                $push: {
+                    reviewId: review._id
+                }
+            })
+            let newProduct = await Product.findById(idProduct)
+                .populate('categoryId', 'name')
+                .populate('brandId', 'name')
+                .populate('reviewId')
+            res.status(200).json(newProduct)
+        }
+
+
+    } catch (err) {
+        res.status(404).json(err)
+    }
+}
+const deleteReview = async (req, res, next) => {
+    try {
+        let idProduct = req.params.idProduct;
+        let product = await Product.findById(idProduct);
+        if (!product) {
+            res.status(404).json({
+                message: "not found"
+            })
+        } else {
+            let review = await reviewController.deleteReview(req, res, next)
+            if (review.status) {
+                console.log(review);
+                await Product.findOneAndUpdate({
+                    _id: idProduct
+                }, {
+                    $pull: {
+                        reviewId: review._id
+                    }
+                })
+                let newProduct = await Product.findById(idProduct)
+                    .populate('categoryId', 'name')
+                    .populate('brandId', 'name')
+                    .populate('reviewId')
+                res.status(200).json(newProduct)
+            } else {
+                res.status(404).json({
+                    message: 'not found review'
+                })
+            }
+        }
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}
+const updateReview = async (req, res, next) => {
+    try {
+        let idProduct = req.params.idProduct;
+        let product = await Product.findById(idProduct);
+        if (!product) {
+            res.status(404).json({
+                message: "not found"
+            })
+        }else{
+            let review = await reviewController.deleteReview(req, res, next)
+            if (review.status) {
+                let newProduct = await Product.findById(idProduct)
+                    .populate('categoryId', 'name')
+                    .populate('brandId', 'name')
+                    .populate('reviewId')
+                res.status(200).json(newProduct)
+            } else {
+                res.status(404).json({
+                    message: 'not found review'
+                })
+            }
+        }
+    } catch (err) {
+
     }
 }
 // 
@@ -105,7 +195,10 @@ module.exports = {
     getAllProduct,
     updateProduct,
     deleteProduct,
-    getDetail
+    getDetail,
+    addReview,
+    deleteReview,
+    updateReview
 }
 
 //get Product by categoryId

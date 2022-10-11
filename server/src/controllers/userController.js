@@ -149,20 +149,36 @@ const updateUser = async (req, res, next) => {
 
         } else {
 
-
-            await User.findOneAndUpdate({
-                _id: id
-            }, {
-                $set: {
-                    name : edit.name,
-                    email : edit.email,
-                    phone : edit.phone,
-                    gender : edit.gender,
-                    dob : edit.dob,
-                    avatar : edit.avatar,
-                    address : edit.address
-                }
-            });
+            if(edit.avatar){
+                await User.findOneAndUpdate({
+                    _id: id
+                }, {
+                    $set: {
+                        name : edit.name,
+                        email : edit.email,
+                        phone : edit.phone,
+                        gender : edit.gender,
+                        dob : edit.dob,
+                        avatar : edit.avatar,
+                        address : edit.address
+                    }
+                });
+            }else{
+                await User.findOneAndUpdate({
+                    _id: id
+                }, {
+                    $set: {
+                        name : edit.name,
+                        email : edit.email,
+                        phone : edit.phone,
+                        gender : edit.gender,
+                        dob : edit.dob,
+                        avatar : edit.avatar,
+                        address : user.avatar
+                    }
+                });
+            }
+            
             user = await User.findById(id).populate('roleId', 'name');
             res.status(200).json({
                 user: user,

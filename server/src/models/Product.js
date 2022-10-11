@@ -20,14 +20,15 @@ const ProductSchema = new mongoose.Schema(
             type: Number,
             default: 0
         },
-        images: 
+        image: 
             {
                type:String
             },
         
-        comment: {
-            type: String,
-        },
+        reviewId: [{
+            type: Schema.Types.ObjectId,
+            ref:'Review'
+        }],
         rating: {
             type: Number,
             default: 0,
