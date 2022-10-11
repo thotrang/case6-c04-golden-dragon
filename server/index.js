@@ -33,7 +33,11 @@ connectDatabase();
 // api_secret:process.env.API_SERCET
 // })
 
-
+// const socketIO = require('socket.io')(http, {
+//     cors: {
+//         origin: "http://localhost:3000"
+//     }
+// })
 
 
 
