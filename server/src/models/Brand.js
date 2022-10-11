@@ -5,23 +5,23 @@ const BrandSchema = new Schema({
     name: {
         type: String,
         require: true
-    },
-    image: {
-
-            public_id : {
-                type : String,
-                require:true
-            },
-            url : {
-                type : String,
-                require: true
-            }
-    },
-
-    description : {
-        type : String,
-        require : true
     }
+    // image: {
+
+    //         public_id : {
+    //             type : String,
+    //             require:true
+    //         },
+    //         url : {
+    //             type : String,
+    //             require: true
+    //         }
+    // },
+
+    // description : {
+    //     type : String,
+    //     require : true
+    // }
 
 
 });
