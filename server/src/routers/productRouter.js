@@ -9,5 +9,5 @@ router.delete('/products/:id',productController.deleteProduct)
 router.get('/products/:id',productController.getDetail)
 router.put('/products/review/:idProduct',productController.addReview)
 router.delete('/products/review/:idProduct/:id',productController.deleteReview)
-router.put('/products/review/:idProduct/:id',productController.updateReview)
+router.put('/products/review/:idProduct/:id',productController.updateComment)
 module.exports = router;

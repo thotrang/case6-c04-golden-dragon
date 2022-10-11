@@ -124,7 +124,7 @@ const deleteReview = async (req, res, next) => {
         res.status(400).json(err)
     }
 }
-const updateReview = async (req, res, next) => {
+const updateComment = async (req, res, next) => {
     try {
         let idProduct = req.params.idProduct;
         let product = await Product.findById(idProduct);
@@ -133,21 +133,23 @@ const updateReview = async (req, res, next) => {
                 message: "not found"
             })
         }else{
-            let review = await reviewController.deleteReview(req, res, next)
-            if (review.status) {
+            let review = await reviewController.editComment(req, res, next)
+            if (!review.status) {
+                console.log(review.status);
+                res.status(404).json({
+                    message: 'not found review 1'
+                })
+                
+            } else {
                 let newProduct = await Product.findById(idProduct)
                     .populate('categoryId', 'name')
                     .populate('brandId', 'name')
                     .populate('reviewId')
                 res.status(200).json(newProduct)
-            } else {
-                res.status(404).json({
-                    message: 'not found review'
-                })
             }
         }
     } catch (err) {
-
+        res.status(404).json(err)
     }
 }
 // 
@@ -198,7 +200,7 @@ module.exports = {
     getDetail,
     addReview,
     deleteReview,
-    updateReview
+    updateComment
 }
 
 //get Product by categoryId

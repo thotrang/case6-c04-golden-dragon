@@ -8,7 +8,10 @@ const addReview = async (req, res, next) => {
         return review
     }
     catch (res) {
-        return false
+        return {
+            status: false,
+            message: "review not found"
+        }
     }
 }
 const deleteReview = async (req, res, next) => {
@@ -17,36 +20,43 @@ const deleteReview = async (req, res, next) => {
         let review = await Review.findById(id);
         if (!review) {
             return {
-                status:false,
-                message:"review not found"
+                status: false,
+                message: "review not found"
             }
         } else {
             await review.deleteOne()
-            return true
+            return {status:true}
         }
     }
     catch (res) {
-        return false
+        return {
+            status: false,
+            message: "review not found"
+        }
     }
 }
-const editReview = async (req,res,next) => {
+const editComment = async (req, res, next) => {
     try {
         let id = req.params.id;
         let review = await Review.findById(id);
         if (!review) {
             return {
-                status:false,
-                message:"review not found"
+                status: false,
+                message: "review not found"
             }
         } else {
+            let data = req.body
+
             await Review.findByIdAndUpdate({
-                _id:id
-            },{
-                $set:{
+                _id: id
+            }, {
+                $set: {
                     comment: data.comment
                 }
             })
-            return true
+            return {
+                status : true
+            }
         }
     }
     catch (res) {
@@ -56,5 +66,5 @@ const editReview = async (req,res,next) => {
 module.exports = {
     addReview,
     deleteReview,
-    editReview
+    editComment
 }
