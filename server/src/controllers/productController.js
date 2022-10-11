@@ -9,7 +9,7 @@ const reviewController = require('./reviewController')
 // get All Product
 const getAllProduct = catchAsyncErrors(async (req, res, next) => {
     const { page } = req.params;
-    const perPage = 10;
+    const perPage = 100;
     const skip = (page - 1) * perPage;
     try {
         const count = await Product.find().countDocuments();
@@ -39,6 +39,7 @@ const createProduct = async (req, res, next) => {
 }
 
 const updateProduct = async (req, res, next) => {
+    console.log(req.body)
     try {
         let id = req.params.id;
         let product = await Product.findById(id);
