@@ -46,7 +46,7 @@ const deleteItem = async (req, res, next) => {
 }
 const updateItem = async (req, res, next) => {
     try {
-        const id = req.idItem;
+        const id = req.params.id_item;
         let item = await Item.findById(id);
         if (!item) {
             return false
@@ -55,7 +55,7 @@ const updateItem = async (req, res, next) => {
             if (!product) {
                 return false
             } else {
-                const data = req.body.data1
+                const data = req.body.data
                 await Item.findOneAndUpdate({
                     _id: id
                 }, {
