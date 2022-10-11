@@ -57,7 +57,7 @@ const deleteCategory = async(req,res,next) => {
             message :"Category not exist"
             })
      }  else {
-        await category.delete();
+        await category.deleteOne();
         res.status(200).json("Delete success!!")
      }
     } catch (err) {
