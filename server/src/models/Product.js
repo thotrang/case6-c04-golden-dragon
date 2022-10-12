@@ -29,7 +29,7 @@ const ProductSchema = new mongoose.Schema(
             type: Schema.Types.ObjectId,
             ref:'Review'
         }],
-        starts :[{
+        stars :[{
             text: {
                 type:Number
             },

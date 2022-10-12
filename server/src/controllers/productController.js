@@ -193,7 +193,7 @@ const getDetail = async (req, res, next) => {
         res.status(404).json(err)
     }
 }
-const addStart = async (req, res, next) => {
+const addStar = async (req, res, next) => {
     try {
         let idProduct = req.params.idProduct;
         let product = await Product.findById(idProduct)
@@ -202,21 +202,21 @@ const addStart = async (req, res, next) => {
                 message: "not found"
             })
         } else {
-            let starts = product.starts
-            let start1 = req.body
+            let stars = product.stars
+            let star1 = req.body
             let rating = 0;
-            for(let start of starts) {
-                rating += start.text
+            for(let star of stars) {
+                rating += star.text
             }
-            for (let start of starts) {
-                if (start.userId == start1.userId) {
+            for (let star of stars) {
+                if (star.userId == star1.userId) {
                     await Product.updateOne({
                         _id: idProduct,
-                        'starts.userId': start.userId
+                        'stars.userId': star.userId
                     }, {
                         $set: {
-                            "starts.$.text": start1.text,
-                            "rating": (rating - start.text + start1.text)/starts.length
+                            "stars.$.text": star1.text,
+                            "rating": (rating - star.text + star1.text)/stars.length
                         },
                     })
                     product = await Product.findById(idProduct)
@@ -228,10 +228,10 @@ const addStart = async (req, res, next) => {
                 _id: idProduct
             }, {
                 $push: {
-                    starts: start1
+                    stars: star1
                 },
                 $set:{
-                    rating : (rating + start1.text)/(starts.length + 1)
+                    rating : (rating + star1.text)/(stars.length + 1)
                 }
             })
 
@@ -252,6 +252,6 @@ module.exports = {
     addReview,
     deleteReview,
     updateComment,
-    addStart
+    addStar
 }
 

@@ -10,5 +10,5 @@ router.get('/products/:id',productController.getDetail)
 router.put('/products/review/:idProduct',productController.addReview)
 router.delete('/products/review/:idProduct/:id',productController.deleteReview)
 router.put('/products/review/:idProduct/:id',productController.updateComment)
-router.put('/products/start/:idProduct',productController.addStart)
+router.put('/products/star/:idProduct',productController.addStar)
 module.exports = router;
