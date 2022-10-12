@@ -81,7 +81,7 @@ const addReview = async (req, res, next) => {
             let newProduct = await Product.findById(idProduct)
                 .populate('categoryId', 'name')
                 .populate('brandId', 'name')
-                .populate('reviewId')
+                .populate({ path: 'reviewId', populate: { path: 'userId', select: 'name' } })
             res.status(200).json(newProduct)
         }
 
@@ -101,7 +101,6 @@ const deleteReview = async (req, res, next) => {
         } else {
             let review = await reviewController.deleteReview(req, res, next)
             if (review.status) {
-                console.log(review);
                 await Product.findOneAndUpdate({
                     _id: idProduct
                 }, {
@@ -112,7 +111,7 @@ const deleteReview = async (req, res, next) => {
                 let newProduct = await Product.findById(idProduct)
                     .populate('categoryId', 'name')
                     .populate('brandId', 'name')
-                    .populate('reviewId')
+                    .populate({ path: 'reviewId', populate: { path: 'userId', select: 'name' } })
                 res.status(200).json(newProduct)
             } else {
                 res.status(404).json({
@@ -132,19 +131,19 @@ const updateComment = async (req, res, next) => {
             res.status(404).json({
                 message: "not found"
             })
-        }else{
+        } else {
             let review = await reviewController.editComment(req, res, next)
             if (!review.status) {
                 console.log(review.status);
                 res.status(404).json({
                     message: 'not found review 1'
                 })
-                
+
             } else {
                 let newProduct = await Product.findById(idProduct)
                     .populate('categoryId', 'name')
                     .populate('brandId', 'name')
-                    .populate('reviewId')
+                    .populate({ path: 'reviewId', populate: { path: 'userId', select: 'name' } })
                 res.status(200).json(newProduct)
             }
         }
@@ -179,7 +178,9 @@ const getDetail = async (req, res, next) => {
     try {
         let product = await Product.findById(id)
             .populate('categoryId', 'name')
-            .populate('brandId', 'name');
+            .populate('brandId', 'name')
+            .populate({ path: 'reviewId', populate: { path: 'userId', select: 'name' } })
+
         if (!product) {
             res.status(404).json({
                 message: "not found"
@@ -192,6 +193,50 @@ const getDetail = async (req, res, next) => {
         res.status(404).json(err)
     }
 }
+const addStart = async (req, res, text) => {
+    try {
+        let idProduct = req.params.idProduct;
+        let product = await Product.findById(idProduct)
+        if (!product) {
+            res.status(404).json({
+                message: "not found"
+            })
+        } else {
+            let starts = product.starts
+            let start1 = req.body
+            for (let start of starts) {
+                if (start.userId == start1.userId) {
+                    await Product.updateOne({
+                        _id: idProduct,
+                        'starts.userId':start.userId
+                    }, {
+                        $set: {
+                            "starts.$.text":start1.text
+                        }
+                    })
+                    product = await Product.findById(idProduct)
+                    res.status(200).json(product)
+                    return;
+                }
+            }
+            await Product.findByIdAndUpdate({
+                _id: idProduct
+            }, {
+                $push: {
+                    starts: start1
+                }
+            })
+            product = await Product.findById(idProduct)
+            res.status(200).json(product)
+        }
+
+    } catch (e) {
+        console.log(e);
+    }
+
+
+
+}
 module.exports = {
     createProduct,
     getAllProduct,
@@ -200,7 +245,8 @@ module.exports = {
     getDetail,
     addReview,
     deleteReview,
-    updateComment
+    updateComment,
+    addStart
 }
 
 //get Product by categoryId

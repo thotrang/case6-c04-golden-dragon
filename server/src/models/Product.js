@@ -29,6 +29,15 @@ const ProductSchema = new mongoose.Schema(
             type: Schema.Types.ObjectId,
             ref:'Review'
         }],
+        starts :[{
+            text: {
+                type:Number
+            },
+            userId: {
+                type: Schema.Types.ObjectId,
+                ref:'User'
+            }
+        }],
         rating: {
             type: Number,
             default: 0,
