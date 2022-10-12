@@ -55,10 +55,10 @@ const register = async (req, res, next) => {
             phone,
             address,
             roleId: roleUser._id,
-            avatar: {
-                public_id: 'a',
-                url: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/11/20/975861/5-Giong-Cho-Long-Xu-.jpg',
-            },
+            // avatar: {
+            //     public_id: 'a',
+            //     url: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/11/20/975861/5-Giong-Cho-Long-Xu-.jpg',
+            // },
             cartId: cart._id,
         });
         try {
