@@ -193,7 +193,7 @@ const getDetail = async (req, res, next) => {
         res.status(404).json(err)
     }
 }
-const addStart = async (req, res, text) => {
+const addStart = async (req, res, next) => {
     try {
         let idProduct = req.params.idProduct;
         let product = await Product.findById(idProduct)
@@ -204,15 +204,20 @@ const addStart = async (req, res, text) => {
         } else {
             let starts = product.starts
             let start1 = req.body
+            let rating = 0;
+            for(let start of starts) {
+                rating += start.text
+            }
             for (let start of starts) {
                 if (start.userId == start1.userId) {
                     await Product.updateOne({
                         _id: idProduct,
-                        'starts.userId':start.userId
+                        'starts.userId': start.userId
                     }, {
                         $set: {
-                            "starts.$.text":start1.text
-                        }
+                            "starts.$.text": start1.text,
+                            "rating": (rating - start.text + start1.text)/starts.length
+                        },
                     })
                     product = await Product.findById(idProduct)
                     res.status(200).json(product)
@@ -224,19 +229,20 @@ const addStart = async (req, res, text) => {
             }, {
                 $push: {
                     starts: start1
+                },
+                $set:{
+                    rating : (rating + start1.text)/(starts.length + 1)
                 }
             })
+
             product = await Product.findById(idProduct)
-            res.status(200).json(product)
+            return res.status(200).json(product)
         }
-
     } catch (e) {
-        console.log(e);
+        return res.status(400).json(e)
     }
-
-
-
 }
+
 module.exports = {
     createProduct,
     getAllProduct,
@@ -249,40 +255,3 @@ module.exports = {
     addStart
 }
 
-//get Product by categoryId
-//get Product by brandId
-//create review or update
-// exports.createProductReview = async (req, res, next) => {
-//     const { rating, comment, productId } = req.body
-//     const review = {
-//         user: req.user._id,
-//         name: req.user.name,
-//         rating: Number(rating),
-//         comment
-//     }
-//     const product = await Product.findById(productId)
-//     const isReviewed = product.reviews.find(rev => rev.user.toString() === req.user._id)
-
-//     if (isReviewed) {
-//         product.reviews.forEach(rev => {
-//             if (rev.user.toString() === req.user.toString())
-//                 (rev.rating = rating),
-//                     (rev.comment = comment)
-//         })
-//     } else {
-//         product.reviews.push(review)
-//         product.rating
-
-//     }
-//     let avg = 0
-//     product.rating = product.reviews.forEach(rev => {
-//         avg += rev.rating
-//     })
-//     await product.save({
-//         validateBeforeSave: false,
-//     })
-//     res.status(200).json({
-//         success: true
-//     })
-
-// }
