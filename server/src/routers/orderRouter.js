@@ -8,4 +8,7 @@ router.put('/:id',orderController.setstatus)
 router.post('',orderController.createOrder)
 router.get('/user/:id',orderController.myOrder)
 router.put('/send/:id',orderController.sendOrder)
+router.put('/cancel/:id',orderController.delOrder)
+router.put('/ok/:id',orderController.okOrder)
+
 module.exports = router;

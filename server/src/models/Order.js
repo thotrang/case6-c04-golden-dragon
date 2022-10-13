@@ -13,7 +13,7 @@ const OrderSchema = new Schema({
     },
     status: {
         type: String,
-        default: null
+        default: 'pending'
     },
     content: {
         item: [],

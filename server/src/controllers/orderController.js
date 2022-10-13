@@ -10,7 +10,7 @@ const createOrder = async (req, res, next) => {
 }
 const getAllOrderPending = async (req, res, next) => {
     try {
-        let orders = await Order.find({}, { status: "pending" }).populate('userId', 'name')
+        let orders = await Order.find().populate('userId', 'name');
         res.status(200).json(orders)
     } catch (err) {
         res.status(400).json(err)
@@ -96,6 +96,46 @@ const sendOrder = async (req, res, next) => {
         return res.status(400).json(err)
     }
 }
+const delOrder = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const order = await Order.findById(id)
+        if (!order) {
+            return res.status(404).json({ message: `not found` })
+        } else {
+            await Order.findByIdAndUpdate({
+                _id: id
+            }, {
+                status: "cancel"
+            })
+
+            let order1 = await Order.findById(id).populate('userId', 'name')
+            return res.status(200).json(order1)
+        }
+    } catch (err) {
+        return res.status(400).json(err)
+    }
+}
+const okOrder = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const order = await Order.findById(id)
+        if (!order) {
+            return res.status(404).json({ message: `not found` })
+        } else {
+            await Order.findByIdAndUpdate({
+                _id: id
+            }, {
+                status: "ok"
+            })
+
+            let order1 = await Order.findById(id).populate('userId', 'name')
+            return res.status(200).json(order1)
+        }
+    } catch (err) {
+        return res.status(400).json(err)
+    }
+}
 const cancelOrder = async (req, res, next) => {
     try {
         // req.
@@ -111,5 +151,7 @@ module.exports = {
     setstatus,
     cancelOrder,
     sendOrder,
-    myOrder
+    myOrder,
+    delOrder,
+    okOrder
 }
