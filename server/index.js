@@ -29,21 +29,15 @@ const connectDatabase = () => {
 }
 connectDatabase();
 
-//cloudinary config
-// cloudinary.config({
-//     cloud_name:process.env.CLOUDINARY_NAME,
-//     api_key:Process.env.API_KEY,
-// api_secret:process.env.API_SERCET
+
+// const socketIO = require('socket.io')(http, {
+//     cors: {
+//         origin: "http://localhost:3000",
+//         methods: ["GET", "POST","PUT","DELETE"]
+//     }
 // })
 
-const socketIO = require('socket.io')(http, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST","PUT","DELETE"]
-    }
-})
-
-socketRoom.room(socketIO)
+// socketRoom.room(socketIO)
 
 app.use('', router)
 server.listen(PORT, () => {

@@ -14,7 +14,6 @@ const verifyToken = (req, res, next) => {
             } else {
                 let token = accessToken.substring(1,(accessToken.length-1))
                 const decoded = jwt.verify(token, process.env.SECRET_KEY);
-                console.log(decoded);
                 req.user = decoded;
                 next();
                
@@ -22,7 +21,7 @@ const verifyToken = (req, res, next) => {
         }
 
     } catch (error) {
-        return res.status(403).json({ success: false, message: 'có token mà hàng lởm 1', err: error });
+        return res.status(403).json({ success: false});
     }
 };
 
