@@ -12,8 +12,7 @@ const verifyToken = (req, res, next) => {
             if (!accessToken) {
                 res.status(401).json({ success: false, message: 'không tìm thấy mã token' });
             } else {
-                let token = accessToken.substring(1,(accessToken.length-1))
-                const decoded = jwt.verify(token, process.env.SECRET_KEY);
+                const decoded = jwt.verify(accessToken, process.env.SECRET_KEY);
                 req.user = decoded;
                 next();
                
