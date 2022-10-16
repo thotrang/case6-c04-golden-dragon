@@ -9,9 +9,11 @@ const verifyToken = (req, res, next) => {
             })
         } else {
             let accessToken = authorization.split(' ')[1];
+            console.log(accessToken);
             if (!accessToken) {
                 res.status(401).json({ success: false, message: 'không tìm thấy mã token' });
             } else {
+                // let token = accessToken.substring(1,(accessToken.length-1))
                 const decoded = jwt.verify(accessToken, process.env.SECRET_KEY);
                 req.user = decoded;
                 next();
@@ -20,7 +22,10 @@ const verifyToken = (req, res, next) => {
         }
 
     } catch (error) {
-        return res.status(403).json({ success: false});
+        return res.status(403).json({ 
+            success: false,
+            message:'loi'
+        });
     }
 };
 
