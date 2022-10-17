@@ -1,9 +1,11 @@
 
 const checkAccountant = (req,res,next) =>{
-    let role = req.user.role;
+    let role = req.user.roleId.name;
+    
     if(!role){
+        console.log(req.user);
         res.status(404).json({
-            message:"you is anonimos"
+            message:"you is anonimos 1"
         })
     }else{
         if(role == 'accountant'){

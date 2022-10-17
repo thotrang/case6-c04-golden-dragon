@@ -16,15 +16,7 @@ const createCart = async (req, res, next) => {
         return false
     }
 };
-// const getCart = async (req, res, next) => {
 
-//     try {
-
-//     } catch (err) {
-//         console.log(err);
-//         res.status(400).json(err);
-//     }
-// };
 const getAllBill = async (req, res, next) => {
     try {
         const carts = await Cart.find()

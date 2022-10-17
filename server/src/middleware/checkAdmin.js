@@ -1,6 +1,6 @@
 
 const checkAdmin = (req,res,next) =>{
-    let role = req.user.role;
+    let role = req.user.roleId.name;
     if(!role){
         res.status(404).json({
             message:"you is anonimos"
