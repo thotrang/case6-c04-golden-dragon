@@ -37,6 +37,9 @@ const socketIO = require('socket.io')(server, {
 socketIO.on('connection', (socket) => {
     console.log("New client connected" + socket.id)
 
+    socket.on("sendDataClient", function (data) {
+        socketIO.emit("sendDataServer", { data });
+    })
 
     socket.on("disconnect", () => {
         console.log("Client disconnected");
