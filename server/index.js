@@ -6,7 +6,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config();
 const router = require('./src/routers/router')
-const fileupload = require('express-fileupload')
+const fileupload = require('express-fileupload');
+const chatController = require("./src/controllers/chatController");
 const server = http.createServer(app);
 // const socketRoom = require('./src/socket/room')
 const PORT = process.env.PORT
@@ -37,8 +38,16 @@ const socketIO = require('socket.io')(server, {
 socketIO.on('connection', (socket) => {
     console.log("New client connected" + socket.id)
 
+    socketIO.on('join_room', data => {
+        console.log(data);
+        socket.join(data)
+    })
+
     socket.on("sendDataClient", function (data) {
-        socketIO.emit("sendDataServer", { data });
+        socketIO.emit("sendDataServer", { data});
+    })
+    socket.on('notify',function (data){
+        socketIO.emit('sendNotify',data)
     })
 
     socket.on("disconnect", () => {
